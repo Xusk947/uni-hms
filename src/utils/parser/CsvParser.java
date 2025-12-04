@@ -67,4 +67,16 @@ public final class CsvParser {
     public static String getString(String value) {
         return value == null ? "" : value;
     }
+
+    public static String formatDate(Date date) {
+        return date == null ? "" : DATE_FORMAT.format(date);
+    }
+
+    public static String formatTime(Date time) {
+        return time == null ? "" : TIME_FORMAT.format(time);
+    }
+
+    public static String formatDateTime(Date dateTime) {
+        return dateTime == null ? "" : DATETIME_FORMAT.format(dateTime);
+    }
 }

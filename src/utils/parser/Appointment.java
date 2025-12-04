@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
+import static utils.parser.CsvParser.formatDate;
+import static utils.parser.CsvParser.formatTime;
 
 public final class Appointment {
 
@@ -41,5 +43,22 @@ public final class Appointment {
                 parseDate(fields[11]),
                 parseDate(fields[12])
         ));
+    }
+
+    public static String toCsvLine(AppointmentData data) {
+        return String.format("%s,%s,%s,%s,%s,%s,%d,%s,%s,%s,%s,%s,%s%n",
+                data.appointmentId(),
+                data.patientId(),
+                data.clinicianId(),
+                data.facilityId(),
+                formatDate(data.appointmentDate()),
+                formatTime(data.appointmentTime()),
+                data.durationMinutes(),
+                data.appointmentType(),
+                data.status(),
+                data.reasonForVisit(),
+                data.notes(),
+                formatDate(data.createdDate()),
+                formatDate(data.lastModified()));
     }
 }

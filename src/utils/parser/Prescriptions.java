@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
+import static utils.parser.CsvParser.formatDate;
 
 public final class Prescriptions {
 
@@ -56,5 +57,24 @@ public final class Prescriptions {
                 parseDate(fields[13]),
                 fields.length > 14 ? parseDate(fields[14]) : null
         ));
+    }
+
+    public static String toCsvLine(PrescriptionData data) {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s%n",
+                data.prescriptionId(),
+                data.patientId(),
+                data.clinicianId(),
+                data.appointmentId(),
+                formatDate(data.prescriptionDate()),
+                data.medicationName(),
+                data.dosage(),
+                data.frequency(),
+                data.durationDays(),
+                data.quantity(),
+                data.instructions(),
+                data.pharmacyName(),
+                data.status(),
+                formatDate(data.issueDate()),
+                formatDate(data.collectionDate()));
     }
 }

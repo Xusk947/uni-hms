@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
+import static utils.parser.CsvParser.formatDate;
 
 public final class Referrals {
 
@@ -53,5 +54,25 @@ public final class Referrals {
                 parseDate(fields[14]),
                 parseDate(fields[15])
         ));
+    }
+
+    public static String toCsvLine(ReferralData data) {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s,%s%n",
+                data.referralId(),
+                data.patientId(),
+                data.referringClinicianId(),
+                data.referredToClinicianId(),
+                data.referringFacilityId(),
+                data.referredToFacilityId(),
+                formatDate(data.referralDate()),
+                data.urgencyLevel(),
+                data.referralReason(),
+                data.clinicalSummary(),
+                data.requestedInvestigations(),
+                data.status(),
+                data.appointmentId(),
+                data.notes(),
+                formatDate(data.createdDate()),
+                formatDate(data.lastUpdated()));
     }
 }
