@@ -1,8 +1,8 @@
 package models;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-public record Patient(String patientID, String name, LocalDate birthDate) {
+public record Patient(String patientID, String name, Date birthDate) {
 
     public void createAppointment() {
     }
