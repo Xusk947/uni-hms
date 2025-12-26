@@ -6,26 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
-import static utils.parser.CsvParser.formatDate;
-import static utils.parser.CsvParser.formatTime;
 
 public final class Appointment {
-
-    public record AppointmentData(
-            String appointmentId,
-            String patientId,
-            String clinicianId,
-            String facilityId,
-            Date appointmentDate,
-            Date appointmentTime,
-            int durationMinutes,
-            String appointmentType,
-            String status,
-            String reasonForVisit,
-            String notes,
-            Date createdDate,
-            Date lastModified
-    ) {}
 
     public static List<AppointmentData> parse(Path csvPath) throws IOException {
         return CsvParser.parse(csvPath, fields -> new AppointmentData(
@@ -60,5 +42,22 @@ public final class Appointment {
                 data.notes(),
                 formatDate(data.createdDate()),
                 formatDate(data.lastModified()));
+    }
+
+    public record AppointmentData(
+            String appointmentId,
+            String patientId,
+            String clinicianId,
+            String facilityId,
+            Date appointmentDate,
+            Date appointmentTime,
+            int durationMinutes,
+            String appointmentType,
+            String status,
+            String reasonForVisit,
+            String notes,
+            Date createdDate,
+            Date lastModified
+    ) {
     }
 }

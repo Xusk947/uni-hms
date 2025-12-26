@@ -8,32 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
-import static utils.parser.CsvParser.formatDate;
 
 public final class Referrals {
-
-    public record ReferralData(
-            String referralId,
-            String patientId,
-            String referringClinicianId,
-            String referredToClinicianId,
-            String referringFacilityId,
-            String referredToFacilityId,
-            Date referralDate,
-            String urgencyLevel,
-            String referralReason,
-            String clinicalSummary,
-            String requestedInvestigations,
-            String status,
-            String appointmentId,
-            String notes,
-            Date createdDate,
-            Date lastUpdated
-    ) {
-        public Referral toModel() {
-            return new Referral(referringClinicianId, referredToClinicianId);
-        }
-    }
 
     public static List<ReferralData> parse(Path csvPath) throws IOException {
         return CsvParser.parse(csvPath, fields -> new ReferralData(
@@ -74,5 +50,28 @@ public final class Referrals {
                 data.notes(),
                 formatDate(data.createdDate()),
                 formatDate(data.lastUpdated()));
+    }
+
+    public record ReferralData(
+            String referralId,
+            String patientId,
+            String referringClinicianId,
+            String referredToClinicianId,
+            String referringFacilityId,
+            String referredToFacilityId,
+            Date referralDate,
+            String urgencyLevel,
+            String referralReason,
+            String clinicalSummary,
+            String requestedInvestigations,
+            String status,
+            String appointmentId,
+            String notes,
+            Date createdDate,
+            Date lastUpdated
+    ) {
+        public Referral toModel() {
+            return new Referral(referringClinicianId, referredToClinicianId);
+        }
     }
 }

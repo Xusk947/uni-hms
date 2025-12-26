@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static services.Const.*;
-
 public final class AuthenticationService {
     private final Map<String, String> credentials;
     private Employee currentUser;

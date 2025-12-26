@@ -1,6 +1,7 @@
 package views.components;
 
-import static views.constants.ViewConstants.*;
+import static views.constants.ViewConstants.APP_NAME;
+import static views.constants.ViewConstants.APP_VERSION;
 
 /**
  * Menu component for rendering navigation menus.

@@ -9,9 +9,9 @@ import java.awt.*;
 
 public class PrescriptionPanel extends JPanel {
 
+    private final PrescriptionController prescriptionController;
     private JTable prescriptionTable;
     private DefaultTableModel tableModel;
-    private final PrescriptionController prescriptionController;
 
     public PrescriptionPanel(PrescriptionController prescriptionController) {
         this.prescriptionController = prescriptionController;
@@ -22,11 +22,11 @@ public class PrescriptionPanel extends JPanel {
         // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(ViewConstants.BACKGROUND);
-        
+
         JLabel titleLabel = new JLabel("Prescriptions");
         titleLabel.setFont(ViewConstants.HEADER_FONT);
         titleLabel.setForeground(ViewConstants.FOREGROUND);
-        
+
         JLabel subtitleLabel = new JLabel("Manage patient prescriptions and medications.");
         subtitleLabel.setFont(ViewConstants.BODY_FONT);
         subtitleLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
@@ -37,7 +37,7 @@ public class PrescriptionPanel extends JPanel {
         titleContainer.add(subtitleLabel);
 
         views.components.ModernButton addButton = new views.components.ModernButton("Issue Prescription");
-        
+
         JPanel buttonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         buttonContainer.setBackground(ViewConstants.BACKGROUND);
         buttonContainer.add(addButton);
@@ -55,10 +55,10 @@ public class PrescriptionPanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(prescriptionTable);
         scrollPane.getViewport().setBackground(ViewConstants.BACKGROUND);
-        scrollPane.setBorder(ViewConstants.CARD_BORDER);
-        
+        scrollPane.setBorder(BorderFactory.createLineBorder(ViewConstants.BORDER_COLOR));
+
         add(scrollPane, BorderLayout.CENTER);
-        
+
         loadData();
     }
 
@@ -68,12 +68,12 @@ public class PrescriptionPanel extends JPanel {
         table.setGridColor(ViewConstants.BORDER_COLOR);
         table.setFont(ViewConstants.BODY_FONT);
         table.setBackground(ViewConstants.BACKGROUND);
-        
+
         table.getTableHeader().setFont(ViewConstants.SUBHEADER_FONT.deriveFont(14f));
         table.getTableHeader().setBackground(ViewConstants.TABLE_HEADER_BG);
         table.getTableHeader().setForeground(ViewConstants.MUTED_FOREGROUND);
         table.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ViewConstants.BORDER_COLOR));
-        
+
         table.setSelectionBackground(ViewConstants.TABLE_SELECTION_BG);
         table.setSelectionForeground(ViewConstants.FOREGROUND);
         table.setFocusable(false);
@@ -82,15 +82,15 @@ public class PrescriptionPanel extends JPanel {
     private void loadData() {
         tableModel.setRowCount(0);
         var prescriptions = prescriptionController.getAllPrescriptions();
-        
+
         for (var p : prescriptions) {
             tableModel.addRow(new Object[]{
-                p.prescriptionId(),
-                p.patientId(),
-                p.medicationName(),
-                p.dosage(),
-                services.Const.DATE_FORMAT.format(p.prescriptionDate()),
-                p.status()
+                    p.prescriptionId(),
+                    p.patientId(),
+                    p.medicationName(),
+                    p.dosage(),
+                    services.Const.DATE_FORMAT.format(p.prescriptionDate()),
+                    p.status()
             });
         }
     }

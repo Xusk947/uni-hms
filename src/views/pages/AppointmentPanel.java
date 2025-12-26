@@ -12,9 +12,9 @@ import java.util.Date;
 
 public class AppointmentPanel extends JPanel {
 
+    private final AppointmentController appointmentController;
     private JTable appointmentTable;
     private DefaultTableModel tableModel;
-    private final AppointmentController appointmentController;
 
     public AppointmentPanel(AppointmentController appointmentController) {
         this.appointmentController = appointmentController;
@@ -25,11 +25,11 @@ public class AppointmentPanel extends JPanel {
         // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(ViewConstants.BACKGROUND);
-        
+
         JLabel titleLabel = new JLabel("Appointments");
         titleLabel.setFont(ViewConstants.HEADER_FONT);
         titleLabel.setForeground(ViewConstants.FOREGROUND);
-        
+
         JLabel subtitleLabel = new JLabel("Manage scheduled appointments.");
         subtitleLabel.setFont(ViewConstants.BODY_FONT);
         subtitleLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
@@ -41,7 +41,7 @@ public class AppointmentPanel extends JPanel {
 
         views.components.ModernButton addButton = new views.components.ModernButton("New Appointment");
         addButton.addActionListener(e -> openAddAppointmentForm());
-        
+
         JPanel buttonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         buttonContainer.setBackground(ViewConstants.BACKGROUND);
         buttonContainer.add(addButton);
@@ -59,10 +59,10 @@ public class AppointmentPanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(appointmentTable);
         scrollPane.getViewport().setBackground(ViewConstants.BACKGROUND);
-        scrollPane.setBorder(ViewConstants.CARD_BORDER);
-        
+        scrollPane.setBorder(BorderFactory.createLineBorder(ViewConstants.BORDER_COLOR));
+
         add(scrollPane, BorderLayout.CENTER);
-        
+
         loadData();
     }
 
@@ -74,24 +74,24 @@ public class AppointmentPanel extends JPanel {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat timeFmt = new SimpleDateFormat("HH:mm");
-                
+
                 Date date = sdf.parse(form.getDate());
                 Date time = timeFmt.parse(form.getTime());
-                
+
                 String appointmentId = "A" + System.currentTimeMillis();
 
                 appointmentController.createAppointment(
-                    appointmentId,
-                    form.getPatientId(),
-                    form.getClinicianId(),
-                    form.getFacilityId(),
-                    date,
-                    time,
-                    form.getDuration(),
-                    form.getAppointmentType(),
-                    form.getReason()
+                        appointmentId,
+                        form.getPatientId(),
+                        form.getClinicianId(),
+                        form.getFacilityId(),
+                        date,
+                        time,
+                        form.getDuration(),
+                        form.getAppointmentType(),
+                        form.getReason()
                 );
-                
+
                 loadData();
                 JOptionPane.showMessageDialog(this, "Appointment booked successfully!");
             } catch (Exception ex) {
@@ -107,12 +107,12 @@ public class AppointmentPanel extends JPanel {
         table.setGridColor(ViewConstants.BORDER_COLOR);
         table.setFont(ViewConstants.BODY_FONT);
         table.setBackground(ViewConstants.BACKGROUND);
-        
+
         table.getTableHeader().setFont(ViewConstants.SUBHEADER_FONT.deriveFont(14f));
         table.getTableHeader().setBackground(ViewConstants.TABLE_HEADER_BG);
         table.getTableHeader().setForeground(ViewConstants.MUTED_FOREGROUND);
         table.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ViewConstants.BORDER_COLOR));
-        
+
         table.setSelectionBackground(ViewConstants.TABLE_SELECTION_BG);
         table.setSelectionForeground(ViewConstants.FOREGROUND);
         table.setFocusable(false);
@@ -121,16 +121,16 @@ public class AppointmentPanel extends JPanel {
     private void loadData() {
         tableModel.setRowCount(0);
         var appointments = appointmentController.getAllAppointments();
-        
+
         for (var a : appointments) {
             tableModel.addRow(new Object[]{
-                a.appointmentId(),
-                a.patientId(),
-                a.clinicianId(),
-                services.Const.DATE_FORMAT.format(a.appointmentDate()),
-                services.Const.TIME_FORMAT.format(a.appointmentTime()),
-                a.appointmentType(),
-                a.status()
+                    a.appointmentId(),
+                    a.patientId(),
+                    a.clinicianId(),
+                    services.Const.DATE_FORMAT.format(a.appointmentDate()),
+                    services.Const.TIME_FORMAT.format(a.appointmentTime()),
+                    a.appointmentType(),
+                    a.status()
             });
         }
     }

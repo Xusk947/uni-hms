@@ -13,12 +13,12 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
-import static services.Const.*;
+import static services.Const.EMAIL_OUTPUT_DIR;
+import static services.Const.REFERRALS_FILE;
 
 public final class ReferralService {
-    private static ReferralService instance;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
+    private static ReferralService instance;
     private final ConcurrentLinkedQueue<Referrals.ReferralData> referralQueue;
     private List<Referrals.ReferralData> referrals;
 

@@ -1,7 +1,7 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 import views.LoginFrame;
-import views.MainFrame;
 
 import javax.swing.*;
 
@@ -15,7 +15,7 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             LoginFrame loginFrame = new LoginFrame();
             loginFrame.setVisible(true);
         });

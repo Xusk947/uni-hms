@@ -1,8 +1,8 @@
 package views.components;
 
+import javax.swing.border.AbstractBorder;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.border.AbstractBorder;
 
 public class RoundedBorder extends AbstractBorder {
     private final Color color;
@@ -21,7 +21,7 @@ public class RoundedBorder extends AbstractBorder {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(color);
         g2.setStroke(new BasicStroke(thickness));
-        g2.draw(new RoundRectangle2D.Double(x + thickness / 2.0, y + thickness / 2.0, 
+        g2.draw(new RoundRectangle2D.Double(x + thickness / 2.0, y + thickness / 2.0,
                 width - thickness, height - thickness, radius, radius));
         g2.dispose();
     }

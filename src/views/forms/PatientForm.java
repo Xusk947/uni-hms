@@ -19,7 +19,7 @@ public class PatientForm extends JDialog {
     private final JTextField gpSurgeryField;
     private final JComboBox<String> genderCombo;
     // Simple date text fields for now, ideally would be a date picker
-    private final JTextField dobField; 
+    private final JTextField dobField;
 
     private boolean submitted = false;
 
@@ -39,10 +39,10 @@ public class PatientForm extends JDialog {
         lastNameField = addFormField(contentPanel, "Last Name");
         dobField = addFormField(contentPanel, "Date of Birth (YYYY-MM-DD)");
         nhsNumberField = addFormField(contentPanel, "NHS Number");
-        
+
         genderCombo = new JComboBox<>(new String[]{"Male", "Female", "Other"});
         addLabeledComponent(contentPanel, "Gender", genderCombo);
-        
+
         phoneField = addFormField(contentPanel, "Phone Number");
         emailField = addFormField(contentPanel, "Email");
         addressField = addFormField(contentPanel, "Address");
@@ -88,11 +88,11 @@ public class PatientForm extends JDialog {
         label.setFont(ViewConstants.BODY_FONT);
         label.setForeground(ViewConstants.MUTED_FOREGROUND);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
         component.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         component.setAlignmentX(Component.LEFT_ALIGNMENT);
         component.setFont(ViewConstants.BODY_FONT);
-        
+
         panel.add(label);
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
         panel.add(component);
@@ -118,17 +118,55 @@ public class PatientForm extends JDialog {
     }
 
     // Getters
-    public boolean isSubmitted() { return submitted; }
-    public String getFirstName() { return firstNameField.getText(); }
-    public String getLastName() { return lastNameField.getText(); }
-    public String getDob() { return dobField.getText(); }
-    public String getNhsNumber() { return nhsNumberField.getText(); }
-    public String getGender() { return (String) genderCombo.getSelectedItem(); }
-    public String getPhone() { return phoneField.getText(); }
-    public String getEmail() { return emailField.getText(); }
-    public String getAddress() { return addressField.getText(); }
-    public String getPostcode() { return postcodeField.getText(); }
-    public String getEmergencyContact() { return emergencyContactField.getText(); }
-    public String getEmergencyPhone() { return emergencyPhoneField.getText(); }
-    public String getGpSurgery() { return gpSurgeryField.getText(); }
+    public boolean isSubmitted() {
+        return submitted;
+    }
+
+    public String getFirstName() {
+        return firstNameField.getText();
+    }
+
+    public String getLastName() {
+        return lastNameField.getText();
+    }
+
+    public String getDob() {
+        return dobField.getText();
+    }
+
+    public String getNhsNumber() {
+        return nhsNumberField.getText();
+    }
+
+    public String getGender() {
+        return (String) genderCombo.getSelectedItem();
+    }
+
+    public String getPhone() {
+        return phoneField.getText();
+    }
+
+    public String getEmail() {
+        return emailField.getText();
+    }
+
+    public String getAddress() {
+        return addressField.getText();
+    }
+
+    public String getPostcode() {
+        return postcodeField.getText();
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContactField.getText();
+    }
+
+    public String getEmergencyPhone() {
+        return emergencyPhoneField.getText();
+    }
+
+    public String getGpSurgery() {
+        return gpSurgeryField.getText();
+    }
 }

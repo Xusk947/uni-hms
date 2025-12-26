@@ -4,14 +4,13 @@ import utils.parser.Prescriptions;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import static services.Const.*;
+
+import static services.Const.PRESCRIPTIONS_FILE;
 
 public final class PrescriptionService {
     private List<Prescriptions.PrescriptionData> prescriptions;

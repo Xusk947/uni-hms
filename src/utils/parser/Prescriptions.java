@@ -8,36 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
-import static utils.parser.CsvParser.formatDate;
 
 public final class Prescriptions {
-
-    public record PrescriptionData(
-            String prescriptionId,
-            String patientId,
-            String clinicianId,
-            String appointmentId,
-            Date prescriptionDate,
-            String medicationName,
-            String dosage,
-            String frequency,
-            int durationDays,
-            int quantity,
-            String instructions,
-            String pharmacyName,
-            String status,
-            Date issueDate,
-            Date collectionDate
-    ) {
-        public Prescription toModel() {
-            return new Prescription(
-                    prescriptionId,
-                    patientId,
-                    medicationName + " - " + dosage,
-                    medicationName
-            );
-        }
-    }
 
     public static List<PrescriptionData> parse(Path csvPath) throws IOException {
         return CsvParser.parse(csvPath, fields -> new PrescriptionData(
@@ -76,5 +48,32 @@ public final class Prescriptions {
                 data.status(),
                 formatDate(data.issueDate()),
                 formatDate(data.collectionDate()));
+    }
+
+    public record PrescriptionData(
+            String prescriptionId,
+            String patientId,
+            String clinicianId,
+            String appointmentId,
+            Date prescriptionDate,
+            String medicationName,
+            String dosage,
+            String frequency,
+            int durationDays,
+            int quantity,
+            String instructions,
+            String pharmacyName,
+            String status,
+            Date issueDate,
+            Date collectionDate
+    ) {
+        public Prescription toModel() {
+            return new Prescription(
+                    prescriptionId,
+                    patientId,
+                    medicationName + " - " + dosage,
+                    medicationName
+            );
+        }
     }
 }

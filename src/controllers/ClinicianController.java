@@ -5,7 +5,6 @@ import utils.parser.Patients;
 import utils.parser.Prescriptions;
 import utils.parser.Referrals;
 
-import java.util.Date;
 import java.util.List;
 
 public final class ClinicianController {

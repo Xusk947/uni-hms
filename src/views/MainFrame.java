@@ -1,10 +1,12 @@
 package views;
 
 import controllers.*;
-import services.*;
+import services.AppointmentService;
+import services.PatientService;
+import services.PrescriptionService;
+import services.StaffService;
 import views.components.SidebarButton;
 import views.constants.ViewConstants;
-import views.pages.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,17 +14,16 @@ import java.awt.event.ActionEvent;
 
 public class MainFrame extends JFrame {
 
-    private JPanel contentPanel;
-    private CardLayout cardLayout;
-    private JPanel sidebar;
-    private ButtonGroup navGroup;
-
     // Controllers
     private final PatientController patientController;
     private final AppointmentController appointmentController;
     private final PrescriptionController prescriptionController;
     private final ReferralController referralController;
     private final StaffController staffController;
+    private JPanel contentPanel;
+    private CardLayout cardLayout;
+    private JPanel sidebar;
+    private ButtonGroup navGroup;
 
     public MainFrame() {
         // Initialize Services
@@ -30,7 +31,7 @@ public class MainFrame extends JFrame {
         AppointmentService appointmentService = new AppointmentService();
         PrescriptionService prescriptionService = new PrescriptionService();
         StaffService staffService = new StaffService();
-        
+
         // Initialize Controllers
         this.patientController = new PatientController(patientService);
         this.appointmentController = new AppointmentController(appointmentService);
@@ -70,20 +71,20 @@ public class MainFrame extends JFrame {
         titleLabel.setFont(ViewConstants.HEADER_FONT);
         titleLabel.setForeground(ViewConstants.FOREGROUND);
         headerPanel.add(titleLabel);
-        
+
         // Add header to sidebar but prevent it from stretching vertically
         headerPanel.setMaximumSize(new Dimension(250, 100));
         sidebar.add(headerPanel);
 
         // Navigation Buttons
         navGroup = new ButtonGroup();
-        
+
         // Container for buttons to help with centering/alignment
         JPanel navContainer = new JPanel();
         navContainer.setLayout(new BoxLayout(navContainer, BoxLayout.Y_AXIS));
         navContainer.setBackground(ViewConstants.BACKGROUND);
         navContainer.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
-        
+
         addNavButton(navContainer, "Dashboard", "DASHBOARD");
         addNavButton(navContainer, "Patients", "PATIENTS");
         addNavButton(navContainer, "Appointments", "APPOINTMENTS");
@@ -100,7 +101,7 @@ public class MainFrame extends JFrame {
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.addActionListener((ActionEvent e) -> cardLayout.show(contentPanel, cardName));
-        
+
         navGroup.add(btn);
         container.add(btn);
         container.add(Box.createRigidArea(new Dimension(0, 8)));
@@ -112,7 +113,7 @@ public class MainFrame extends JFrame {
         contentPanel.setBackground(ViewConstants.BACKGROUND);
 
         // Register Views
-        contentPanel.add(new views.pages.DashboardPanel(), "DASHBOARD");
+        contentPanel.add(new views.pages.DashboardPanel(patientController, appointmentController, prescriptionController, referralController, staffController), "DASHBOARD");
         contentPanel.add(new views.pages.PatientPanel(patientController), "PATIENTS");
         contentPanel.add(new views.pages.AppointmentPanel(appointmentController), "APPOINTMENTS");
         contentPanel.add(new views.pages.PrescriptionPanel(prescriptionController), "PRESCRIPTIONS");
@@ -123,11 +124,11 @@ public class MainFrame extends JFrame {
     private JPanel createPlaceholderPanel(String title) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(ViewConstants.BACKGROUND);
-        
+
         JLabel label = new JLabel(title);
         label.setFont(ViewConstants.HEADER_FONT);
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         panel.add(label, BorderLayout.CENTER);
         return panel;
     }

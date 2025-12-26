@@ -11,9 +11,9 @@ import java.text.SimpleDateFormat;
 
 public class PatientPanel extends JPanel {
 
+    private final PatientController patientController;
     private JTable patientTable;
     private DefaultTableModel tableModel;
-    private final PatientController patientController;
 
     public PatientPanel(PatientController patientController) {
         this.patientController = patientController;
@@ -24,11 +24,11 @@ public class PatientPanel extends JPanel {
         // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(ViewConstants.BACKGROUND);
-        
+
         JLabel titleLabel = new JLabel("Patients");
         titleLabel.setFont(ViewConstants.HEADER_FONT);
         titleLabel.setForeground(ViewConstants.FOREGROUND);
-        
+
         JLabel subtitleLabel = new JLabel("Manage registered patients.");
         subtitleLabel.setFont(ViewConstants.BODY_FONT);
         subtitleLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
@@ -45,7 +45,7 @@ public class PatientPanel extends JPanel {
         searchField.setBorder(ViewConstants.INPUT_BORDER);
         views.components.ModernButton searchButton = new views.components.ModernButton("Search", ViewConstants.SECONDARY, ViewConstants.SECONDARY_FOREGROUND);
         searchButton.addActionListener(e -> searchPatients(searchField.getText()));
-        
+
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
 
@@ -62,10 +62,10 @@ public class PatientPanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(patientTable);
         scrollPane.getViewport().setBackground(ViewConstants.BACKGROUND);
-        scrollPane.setBorder(ViewConstants.CARD_BORDER);
-        
+        scrollPane.setBorder(BorderFactory.createLineBorder(ViewConstants.BORDER_COLOR));
+
         add(scrollPane, BorderLayout.CENTER);
-        
+
         loadData();
     }
 
@@ -84,12 +84,12 @@ public class PatientPanel extends JPanel {
         table.setGridColor(ViewConstants.BORDER_COLOR);
         table.setFont(ViewConstants.BODY_FONT);
         table.setBackground(ViewConstants.BACKGROUND);
-        
+
         table.getTableHeader().setFont(ViewConstants.SUBHEADER_FONT.deriveFont(14f));
         table.getTableHeader().setBackground(ViewConstants.TABLE_HEADER_BG);
         table.getTableHeader().setForeground(ViewConstants.MUTED_FOREGROUND);
         table.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ViewConstants.BORDER_COLOR));
-        
+
         table.setSelectionBackground(ViewConstants.TABLE_SELECTION_BG);
         table.setSelectionForeground(ViewConstants.FOREGROUND);
         table.setFocusable(false);
@@ -115,13 +115,13 @@ public class PatientPanel extends JPanel {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (var p : patients) {
             tableModel.addRow(new Object[]{
-                p.patientId(),
-                p.firstName() + " " + p.lastName(),
-                dateFormat.format(p.dateOfBirth()),
-                p.nhsNumber(),
-                p.gender(),
-                p.phoneNumber(),
-                p.email()
+                    p.patientId(),
+                    p.firstName() + " " + p.lastName(),
+                    dateFormat.format(p.dateOfBirth()),
+                    p.nhsNumber(),
+                    p.gender(),
+                    p.phoneNumber(),
+                    p.email()
             });
         }
     }

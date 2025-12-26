@@ -1,33 +1,13 @@
 package utils.parser;
 
-import models.Patient;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 
 import static utils.parser.CsvParser.*;
-import static utils.parser.CsvParser.formatDate;
 
 public final class Patients {
-
-    public record PatientData(
-            String patientId,
-            String firstName,
-            String lastName,
-            Date dateOfBirth,
-            String nhsNumber,
-            String gender,
-            String phoneNumber,
-            String email,
-            String address,
-            String postcode,
-            String emergencyContactName,
-            String emergencyContactPhone,
-            Date registrationDate,
-            String gpSurgeryId
-    ) {}
 
     public static List<PatientData> parse(Path csvPath) throws IOException {
         return CsvParser.parse(csvPath, fields -> new PatientData(
@@ -64,5 +44,23 @@ public final class Patients {
                 data.emergencyContactPhone(),
                 formatDate(data.registrationDate()),
                 data.gpSurgeryId());
+    }
+
+    public record PatientData(
+            String patientId,
+            String firstName,
+            String lastName,
+            Date dateOfBirth,
+            String nhsNumber,
+            String gender,
+            String phoneNumber,
+            String email,
+            String address,
+            String postcode,
+            String emergencyContactName,
+            String emergencyContactPhone,
+            Date registrationDate,
+            String gpSurgeryId
+    ) {
     }
 }

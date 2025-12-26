@@ -5,24 +5,10 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 
-import static utils.parser.CsvParser.*;
+import static utils.parser.CsvParser.getString;
+import static utils.parser.CsvParser.parseDate;
 
 public final class Clinician {
-
-    public record ClinicianData(
-            String clinicianId,
-            String firstName,
-            String lastName,
-            String title,
-            String speciality,
-            String gmcNumber,
-            String phoneNumber,
-            String email,
-            String workplaceId,
-            String workplaceType,
-            String employmentStatus,
-            Date startDate
-    ) {}
 
     public static List<ClinicianData> parse(Path csvPath) throws IOException {
         return CsvParser.parse(csvPath, fields -> new ClinicianData(
@@ -39,5 +25,21 @@ public final class Clinician {
                 getString(fields[10]),
                 parseDate(fields[11])
         ));
+    }
+
+    public record ClinicianData(
+            String clinicianId,
+            String firstName,
+            String lastName,
+            String title,
+            String speciality,
+            String gmcNumber,
+            String phoneNumber,
+            String email,
+            String workplaceId,
+            String workplaceType,
+            String employmentStatus,
+            Date startDate
+    ) {
     }
 }

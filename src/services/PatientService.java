@@ -4,13 +4,10 @@ import utils.parser.Patients;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import static services.Const.*;
 
 public final class PatientService {
     private List<Patients.PatientData> patients;
