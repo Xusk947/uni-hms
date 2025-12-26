@@ -34,11 +34,8 @@ public final class AuthenticationService {
         }
     }
 
-    public boolean login(String staffId, String password) {
-        if (credentials.containsKey(staffId)) {
-            return true;
-        }
-        return false;
+    public boolean login(String staffId) {
+        return credentials.containsKey(staffId);
     }
 
     public void logout() {

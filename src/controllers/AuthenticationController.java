@@ -12,8 +12,8 @@ public final class AuthenticationController {
         this.authService = authService;
     }
 
-    public boolean login(String staffId, String password) {
-        return authService.login(staffId, password);
+    public boolean login(String staffId) {
+        return authService.login(staffId);
     }
 
     public void logout() {
