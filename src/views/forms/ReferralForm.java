@@ -21,9 +21,19 @@ public class ReferralForm extends JDialog {
     private final ModernTextField investigationsField;
 
     private boolean submitted = false;
+    private boolean isEditMode = false;
+    private String referralId;
 
     public ReferralForm(Window owner) {
-        super(owner, "New Referral", ModalityType.APPLICATION_MODAL);
+        this(owner, null);
+    }
+
+    public ReferralForm(Window owner, utils.parser.Referrals.ReferralData existingReferral) {
+        super(owner, existingReferral == null ? "New Referral" : "Edit Referral", ModalityType.APPLICATION_MODAL);
+        this.isEditMode = existingReferral != null;
+        if (isEditMode) {
+            this.referralId = existingReferral.referralId();
+        }
         setSize(550, 700);
         setLocationRelativeTo(owner);
         setLayout(new BorderLayout());
@@ -40,7 +50,7 @@ public class ReferralForm extends JDialog {
         referringFacilityField = addFormField(contentPanel, "Referring Facility ID");
         referredToFacilityField = addFormField(contentPanel, "Referred To Facility ID");
 
-        urgencyCombo = new JComboBox<>(new String[] { "Routine", "Urgent", "Non-urgent" });
+        urgencyCombo = new JComboBox<>(new String[]{"Routine", "Urgent", "Non-urgent"});
         urgencyCombo.setFont(ViewConstants.BODY_FONT);
         urgencyCombo.setBackground(ViewConstants.BACKGROUND);
         addLabeledComponent(contentPanel, "Urgency Level", urgencyCombo);
@@ -62,7 +72,7 @@ public class ReferralForm extends JDialog {
                 ViewConstants.SECONDARY_FOREGROUND);
         cancelButton.addActionListener(e -> dispose());
 
-        ModernButton saveButton = new ModernButton("Create Referral");
+        ModernButton saveButton = new ModernButton(isEditMode ? "Update Referral" : "Create Referral");
         saveButton.addActionListener(e -> {
             if (validateForm()) {
                 submitted = true;
@@ -73,12 +83,26 @@ public class ReferralForm extends JDialog {
         buttonPanel.add(cancelButton);
         buttonPanel.add(saveButton);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        if (isEditMode && existingReferral != null) {
+            populateFields(existingReferral);
+        }
+    }
+
+    private void populateFields(utils.parser.Referrals.ReferralData referral) {
+        patientIdField.setText(referral.patientId());
+        referringClinicianField.setText(referral.referringClinicianId());
+        referredToClinicianField.setText(referral.referredToClinicianId());
+        referringFacilityField.setText(referral.referringFacilityId());
+        referredToFacilityField.setText(referral.referredToFacilityId());
+        urgencyCombo.setSelectedItem(referral.urgencyLevel());
+        reasonArea.setText(referral.referralReason());
+        clinicalSummaryArea.setText(referral.clinicalSummary());
+        investigationsField.setText(referral.requestedInvestigations());
     }
 
     private boolean validateForm() {
-        boolean valid = true;
-        if (!validateField(patientIdField))
-            valid = false;
+        boolean valid = validateField(patientIdField);
         if (!validateField(referringClinicianField))
             valid = false;
         if (!validateField(referredToClinicianField))
@@ -176,5 +200,13 @@ public class ReferralForm extends JDialog {
 
     public String getRequestedInvestigations() {
         return investigationsField.getText();
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    public String getReferralId() {
+        return referralId;
     }
 }

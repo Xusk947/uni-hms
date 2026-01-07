@@ -22,9 +22,19 @@ public class PrescriptionForm extends JDialog {
     private final ModernTextField pharmacyField;
 
     private boolean submitted = false;
+    private boolean isEditMode = false;
+    private String prescriptionId;
 
     public PrescriptionForm(Window owner) {
-        super(owner, "Issue Prescription", ModalityType.APPLICATION_MODAL);
+        this(owner, null);
+    }
+
+    public PrescriptionForm(Window owner, utils.parser.Prescriptions.PrescriptionData existingPrescription) {
+        super(owner, existingPrescription == null ? "Issue Prescription" : "Edit Prescription", ModalityType.APPLICATION_MODAL);
+        this.isEditMode = existingPrescription != null;
+        if (isEditMode) {
+            this.prescriptionId = existingPrescription.prescriptionId();
+        }
         setSize(500, 680);
         setLocationRelativeTo(owner);
         setLayout(new BorderLayout());
@@ -41,7 +51,7 @@ public class PrescriptionForm extends JDialog {
         medicationField = addFormField(contentPanel, "Medication Name");
         dosageField = addFormField(contentPanel, "Dosage (e.g., 500mg)");
 
-        frequencyCombo = new JComboBox<>(new String[] {
+        frequencyCombo = new JComboBox<>(new String[]{
                 "Once daily", "Twice daily", "Three times daily",
                 "Four times daily", "As needed", "Once weekly"
         });
@@ -82,7 +92,7 @@ public class PrescriptionForm extends JDialog {
                 ViewConstants.SECONDARY_FOREGROUND);
         cancelButton.addActionListener(e -> dispose());
 
-        ModernButton saveButton = new ModernButton("Issue Prescription");
+        ModernButton saveButton = new ModernButton(isEditMode ? "Update Prescription" : "Issue Prescription");
         saveButton.addActionListener(e -> {
             if (validateForm()) {
                 submitted = true;
@@ -93,12 +103,27 @@ public class PrescriptionForm extends JDialog {
         buttonPanel.add(cancelButton);
         buttonPanel.add(saveButton);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        if (isEditMode && existingPrescription != null) {
+            populateFields(existingPrescription);
+        }
+    }
+
+    private void populateFields(utils.parser.Prescriptions.PrescriptionData prescription) {
+        patientIdField.setText(prescription.patientId());
+        clinicianIdField.setText(prescription.clinicianId());
+        appointmentIdField.setText(prescription.appointmentId());
+        medicationField.setText(prescription.medicationName());
+        dosageField.setText(prescription.dosage());
+        frequencyCombo.setSelectedItem(prescription.frequency());
+        durationField.setText(String.valueOf(prescription.durationDays()));
+        quantityField.setText(String.valueOf(prescription.quantity()));
+        instructionsArea.setText(prescription.instructions());
+        pharmacyField.setText(prescription.pharmacyName());
     }
 
     private boolean validateForm() {
-        boolean valid = true;
-        if (!validateField(patientIdField))
-            valid = false;
+        boolean valid = validateField(patientIdField);
         if (!validateField(clinicianIdField))
             valid = false;
         if (!validateField(medicationField))
@@ -190,5 +215,13 @@ public class PrescriptionForm extends JDialog {
 
     public String getPharmacyName() {
         return pharmacyField.getText();
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    public String getPrescriptionId() {
+        return prescriptionId;
     }
 }

@@ -5,7 +5,7 @@ out/
 .kotlin
 
 ### Project emails ###
-.referral_emails
+.referral_emails/*
 
 ### Eclipse ###
 .apt_generated
@@ -29,7 +29,7 @@ bin/
 ### VS Code ###
 .vscode/
 .windsurf/
-.agents/
+.agent/
 
 ### Mac OS ###
 .DS_Store

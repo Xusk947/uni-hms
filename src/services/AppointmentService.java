@@ -114,4 +114,49 @@ public final class AppointmentService {
     public List<Appointment.AppointmentData> viewSchedule(String clinicianId) {
         return getAppointmentsByClinician(clinicianId);
     }
+
+    public void deleteAppointment(String appointmentId) {
+        try {
+            List<String> lines = Files.readAllLines(APPOINTMENTS_FILE);
+            List<String> updatedLines = lines.stream()
+                    .filter(line -> !line.startsWith(appointmentId + ","))
+                    .collect(Collectors.toList());
+
+            Files.write(APPOINTMENTS_FILE, updatedLines);
+            loadAppointments();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete appointment", e);
+        }
+    }
+
+    public void updateAppointment(String appointmentId, String patientId, String clinicianId,
+                                  String facilityId, Date appointmentDate, Date appointmentTime,
+                                  int duration, String type, String status, String reason, String notes) {
+        try {
+            List<String> lines = Files.readAllLines(APPOINTMENTS_FILE);
+            Date now = new Date();
+
+            List<String> updatedLines = lines.stream()
+                    .map(line -> {
+                        if (line.startsWith(appointmentId + ",")) {
+                            String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                            Date createdDate = parts.length > 11 ? utils.parser.CsvParser.parseDate(parts[11]) : now;
+
+                            Appointment.AppointmentData updated = new Appointment.AppointmentData(
+                                    appointmentId, patientId, clinicianId, facilityId,
+                                    appointmentDate, appointmentTime, duration, type,
+                                    status, reason, notes, createdDate, now
+                            );
+                            return Appointment.toCsvLine(updated).trim();
+                        }
+                        return line;
+                    })
+                    .collect(Collectors.toList());
+
+            Files.write(APPOINTMENTS_FILE, updatedLines);
+            loadAppointments();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update appointment", e);
+        }
+    }
 }

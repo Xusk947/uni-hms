@@ -17,9 +17,19 @@ public class AppointmentForm extends JDialog {
     private final JTextArea reasonArea;
 
     private boolean submitted = false;
+    private boolean isEditMode = false;
+    private String appointmentId;
 
     public AppointmentForm(Window owner) {
-        super(owner, "New Appointment", ModalityType.APPLICATION_MODAL);
+        this(owner, null);
+    }
+
+    public AppointmentForm(Window owner, utils.parser.Appointment.AppointmentData existingAppointment) {
+        super(owner, existingAppointment == null ? "New Appointment" : "Edit Appointment", ModalityType.APPLICATION_MODAL);
+        this.isEditMode = existingAppointment != null;
+        if (isEditMode) {
+            this.appointmentId = existingAppointment.appointmentId();
+        }
         setSize(500, 650);
         setLocationRelativeTo(owner);
         setLayout(new BorderLayout());
@@ -75,7 +85,7 @@ public class AppointmentForm extends JDialog {
         views.components.ModernButton cancelButton = new views.components.ModernButton("Cancel", ViewConstants.SECONDARY, ViewConstants.SECONDARY_FOREGROUND);
         cancelButton.addActionListener(e -> dispose());
 
-        views.components.ModernButton saveButton = new views.components.ModernButton("Book Appointment");
+        views.components.ModernButton saveButton = new views.components.ModernButton(isEditMode ? "Update Appointment" : "Book Appointment");
         saveButton.addActionListener(e -> {
             if (validateForm()) {
                 submitted = true;
@@ -86,12 +96,26 @@ public class AppointmentForm extends JDialog {
         buttonPanel.add(cancelButton);
         buttonPanel.add(saveButton);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        if (isEditMode && existingAppointment != null) {
+            populateFields(existingAppointment);
+        }
+    }
+
+    private void populateFields(utils.parser.Appointment.AppointmentData appointment) {
+        patientIdField.setText(appointment.patientId());
+        clinicianIdField.setText(appointment.clinicianId());
+        facilityIdField.setText(appointment.facilityId());
+        dateField.setText(services.Const.DATE_FORMAT.format(appointment.appointmentDate()));
+        timeField.setText(services.Const.TIME_FORMAT.format(appointment.appointmentTime()));
+        durationField.setText(String.valueOf(appointment.durationMinutes()));
+        typeCombo.setSelectedItem(appointment.appointmentType());
+        reasonArea.setText(appointment.reasonForVisit());
     }
 
     private boolean validateForm() {
-        boolean isValid = true;
+        boolean isValid = validateField(patientIdField);
 
-        if (!validateField(patientIdField)) isValid = false;
         if (!validateField(clinicianIdField)) isValid = false;
         if (!validateField(facilityIdField)) isValid = false;
         if (!validateField(dateField)) isValid = false;
@@ -192,5 +216,13 @@ public class AppointmentForm extends JDialog {
 
     public String getReason() {
         return reasonArea.getText();
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    public String getAppointmentId() {
+        return appointmentId;
     }
 }

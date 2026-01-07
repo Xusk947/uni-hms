@@ -12,7 +12,7 @@ public class Main {
             try {
                 // Set system look and feel for better integration (though we use custom styling)
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                
+
                 LoginFrame loginFrame = new LoginFrame();
                 loginFrame.setVisible(true);
             } catch (Throwable e) {

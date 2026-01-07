@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 public class LoginFrame extends JFrame {
 
     private final AuthenticationController authController;
-    private views.components.ModernTextField usernameField;
+    private final views.components.ModernTextField usernameField;
 
     public LoginFrame() {
         this.authController = new AuthenticationController(new AuthenticationService());

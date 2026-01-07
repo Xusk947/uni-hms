@@ -9,6 +9,9 @@ public final class Const {
     public static final Path PATIENTS_FILE = Path.of("patients.csv");
     public static final Path PRESCRIPTIONS_FILE = Path.of("prescriptions.csv");
 
+    public static final Path STAFF_FILE = Path.of("staff.csv");
+    public static final Path FACILITIES_FILE = Path.of("facilities.csv");
+    public static final Path CLINICIANS_FILE = Path.of("clinicians.csv");
     public static final Path REFERRALS_FILE = Path.of("referrals.csv");
     public static final Path EMAIL_OUTPUT_DIR = Path.of("referral_emails");
 

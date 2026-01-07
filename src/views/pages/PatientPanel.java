@@ -15,8 +15,8 @@ import java.util.List;
 public class PatientPanel extends PageContainer {
 
     private final PatientController patientController;
-    private JTable patientTable;
-    private DefaultTableModel tableModel;
+    private final JTable patientTable;
+    private final DefaultTableModel tableModel;
 
     public PatientPanel(PatientController patientController) {
         super("Patients", "Manage registered patients.");
@@ -31,7 +31,7 @@ public class PatientPanel extends PageContainer {
         addHeaderAction(searchField);
         addHeaderAction(searchButton);
 
-        String[] columns = { "ID", "Name", "DOB", "NHS Number", "Gender", "Phone", "Email" };
+        String[] columns = {"ID", "Name", "DOB", "NHS Number", "Gender", "Phone", "Email"};
         tableModel = new DefaultTableModel(columns, 0);
         patientTable = new JTable(tableModel);
         TableStyler.applyStyle(patientTable);
@@ -57,7 +57,7 @@ public class PatientPanel extends PageContainer {
     private void populateTable(List<Patients.PatientData> patients) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (var p : patients) {
-            tableModel.addRow(new Object[] {
+            tableModel.addRow(new Object[]{
                     p.patientId(),
                     p.firstName() + " " + p.lastName(),
                     dateFormat.format(p.dateOfBirth()),

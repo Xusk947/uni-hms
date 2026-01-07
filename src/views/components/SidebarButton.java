@@ -4,7 +4,6 @@ import views.constants.ViewConstants;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -40,7 +39,7 @@ public class SidebarButton extends JToggleButton {
 
         // Listen for selection changes (from ButtonGroup)
         addItemListener(e -> updateStyle());
-        
+
         // Initial style
         updateStyle();
     }

@@ -64,4 +64,17 @@ public final class ReferralController {
     public Path sendReferralEmail(String referralId) {
         return referralService.sendReferralEmail(referralId);
     }
+
+    public void deleteReferral(String referralId) {
+        referralService.deleteReferral(referralId);
+    }
+
+    public void updateReferral(String referralId, String patientId, String referringClinicianId,
+                               String referredToClinicianId, String referringFacilityId,
+                               String referredToFacilityId, String urgencyLevel, String reason,
+                               String clinicalSummary, String requestedInvestigations, String status) {
+        referralService.updateReferral(referralId, patientId, referringClinicianId,
+                referredToClinicianId, referringFacilityId, referredToFacilityId,
+                urgencyLevel, reason, clinicalSummary, requestedInvestigations, status);
+    }
 }

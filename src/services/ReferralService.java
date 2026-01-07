@@ -70,9 +70,9 @@ public final class ReferralService {
     }
 
     public void createReferral(String referralId, String patientId, String referringClinicianId,
-            String referredToClinicianId, String referringFacilityId,
-            String referredToFacilityId, String urgencyLevel, String reason,
-            String clinicalSummary, String requestedInvestigations) {
+                               String referredToClinicianId, String referringFacilityId,
+                               String referredToFacilityId, String urgencyLevel, String reason,
+                               String clinicalSummary, String requestedInvestigations) {
         Date now = new Date();
         Referrals.ReferralData newReferral = new Referrals.ReferralData(
                 referralId, patientId, referringClinicianId, referredToClinicianId,
@@ -101,31 +101,31 @@ public final class ReferralService {
         String sentDateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
 
         String emailContent = String.format("""
-                REFERRAL NOTIFICATION
-                =====================
-
-                Referral ID: %s
-                Patient ID: %s
-                Referral Date: %s
-                Email Sent: %s
-
-                FROM: Clinician %s (Facility: %s)
-                TO: Specialist %s (Facility: %s)
-
-                Urgency Level: %s
-                Reason: %s
-
-                Clinical Summary:
-                %s
-
-                Requested Investigations:
-                %s
-
-                Status: %s
-
-                =====================
-                This is an automated referral notification.
-                """,
+                        REFERRAL NOTIFICATION
+                        =====================
+                        
+                        Referral ID: %s
+                        Patient ID: %s
+                        Referral Date: %s
+                        Email Sent: %s
+                        
+                        FROM: Clinician %s (Facility: %s)
+                        TO: Specialist %s (Facility: %s)
+                        
+                        Urgency Level: %s
+                        Reason: %s
+                        
+                        Clinical Summary:
+                        %s
+                        
+                        Requested Investigations:
+                        %s
+                        
+                        Status: %s
+                        
+                        =====================
+                        This is an automated referral notification.
+                        """,
                 referral.referralId(), referral.patientId(),
                 DATE_FORMAT.format(referral.referralDate()),
                 sentDateTime,
@@ -182,5 +182,55 @@ public final class ReferralService {
 
     public int getQueueSize() {
         return referralQueue.size();
+    }
+
+    public void deleteReferral(String referralId) {
+        try {
+            List<String> lines = Files.readAllLines(REFERRALS_FILE);
+            List<String> updatedLines = lines.stream()
+                    .filter(line -> !line.startsWith(referralId + ","))
+                    .collect(Collectors.toList());
+
+            Files.write(REFERRALS_FILE, updatedLines);
+            loadReferrals();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete referral", e);
+        }
+    }
+
+    public void updateReferral(String referralId, String patientId, String referringClinicianId,
+                               String referredToClinicianId, String referringFacilityId,
+                               String referredToFacilityId, String urgencyLevel, String reason,
+                               String clinicalSummary, String requestedInvestigations, String status) {
+        try {
+            List<String> lines = Files.readAllLines(REFERRALS_FILE);
+            Date now = new Date();
+
+            List<String> updatedLines = lines.stream()
+                    .map(line -> {
+                        if (line.startsWith(referralId + ",")) {
+                            String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                            Date referralDate = parts.length > 6 ? utils.parser.CsvParser.parseDate(parts[6]) : now;
+                            Date createdDate = parts.length > 14 ? utils.parser.CsvParser.parseDate(parts[14]) : now;
+                            String appointmentId = parts.length > 12 ? parts[12] : "";
+                            String notes = parts.length > 13 ? parts[13] : "";
+
+                            Referrals.ReferralData updated = new Referrals.ReferralData(
+                                    referralId, patientId, referringClinicianId, referredToClinicianId,
+                                    referringFacilityId, referredToFacilityId, referralDate, urgencyLevel,
+                                    reason, clinicalSummary, requestedInvestigations, status,
+                                    appointmentId, notes, createdDate, now
+                            );
+                            return Referrals.toCsvLine(updated).trim();
+                        }
+                        return line;
+                    })
+                    .collect(Collectors.toList());
+
+            Files.write(REFERRALS_FILE, updatedLines);
+            loadReferrals();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update referral", e);
+        }
     }
 }

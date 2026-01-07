@@ -13,10 +13,10 @@ import java.awt.*;
 public class StaffPanel extends PageContainer {
 
     private final StaffController staffController;
-    private JPanel contentPanel;
-    private CardLayout cardLayout;
-    private ModernButton cliniciansTabBtn;
-    private ModernButton staffTabBtn;
+    private final JPanel contentPanel;
+    private final CardLayout cardLayout;
+    private final ModernButton cliniciansTabBtn;
+    private final ModernButton staffTabBtn;
 
     public StaffPanel(StaffController staffController) {
         super("Staff Management");
@@ -71,14 +71,14 @@ public class StaffPanel extends PageContainer {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(ViewConstants.BACKGROUND);
 
-        String[] columns = { "ID", "Name", "Role", "Speciality", "Email" };
+        String[] columns = {"ID", "Name", "Role", "Speciality", "Email"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         JTable table = new JTable(model);
         TableStyler.applyStyle(table);
 
         var clinicians = staffController.getAllClinicians();
         for (var c : clinicians) {
-            model.addRow(new Object[] {
+            model.addRow(new Object[]{
                     c.clinicianId(),
                     c.firstName() + " " + c.lastName(),
                     c.title(),
@@ -95,14 +95,14 @@ public class StaffPanel extends PageContainer {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(ViewConstants.BACKGROUND);
 
-        String[] columns = { "ID", "Name", "Role", "Department", "Email" };
+        String[] columns = {"ID", "Name", "Role", "Department", "Email"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         JTable table = new JTable(model);
         TableStyler.applyStyle(table);
 
         var staff = staffController.getAllStaff();
         for (var s : staff) {
-            model.addRow(new Object[] {
+            model.addRow(new Object[]{
                     s.staffId(),
                     s.firstName() + " " + s.lastName(),
                     s.role(),

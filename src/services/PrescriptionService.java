@@ -74,4 +74,53 @@ public final class PrescriptionService {
                     old.quantity(), old.instructions(), old.pharmacyName());
         }
     }
+
+    public void deletePrescription(String prescriptionId) {
+        try {
+            List<String> lines = Files.readAllLines(PRESCRIPTIONS_FILE);
+            List<String> updatedLines = lines.stream()
+                    .filter(line -> !line.startsWith(prescriptionId + ","))
+                    .collect(Collectors.toList());
+
+            Files.write(PRESCRIPTIONS_FILE, updatedLines);
+            loadPrescriptions();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete prescription", e);
+        }
+    }
+
+    public void updatePrescription(String prescriptionId, String patientId, String clinicianId,
+                                   String appointmentId, String medicationName, String dosage,
+                                   String frequency, int durationDays, int quantity,
+                                   String instructions, String pharmacyName, String status) {
+        try {
+            List<String> lines = Files.readAllLines(PRESCRIPTIONS_FILE);
+            Date now = new Date();
+
+            List<String> updatedLines = lines.stream()
+                    .map(line -> {
+                        if (line.startsWith(prescriptionId + ",")) {
+                            String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                            Date prescriptionDate = parts.length > 4 ? utils.parser.CsvParser.parseDate(parts[4]) : now;
+                            Date issueDate = parts.length > 13 ? utils.parser.CsvParser.parseDate(parts[13]) : now;
+                            Date collectionDate = parts.length > 14 ? utils.parser.CsvParser.parseDate(parts[14]) : null;
+
+                            Prescriptions.PrescriptionData updated = new Prescriptions.PrescriptionData(
+                                    prescriptionId, patientId, clinicianId, appointmentId,
+                                    prescriptionDate, medicationName, dosage, frequency,
+                                    durationDays, quantity, instructions, pharmacyName,
+                                    status, issueDate, collectionDate
+                            );
+                            return Prescriptions.toCsvLine(updated).trim();
+                        }
+                        return line;
+                    })
+                    .collect(Collectors.toList());
+
+            Files.write(PRESCRIPTIONS_FILE, updatedLines);
+            loadPrescriptions();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update prescription", e);
+        }
+    }
 }

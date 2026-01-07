@@ -36,4 +36,17 @@ public final class PrescriptionController {
     public List<Prescriptions.PrescriptionData> getActivePrescriptions(String patientId) {
         return getPrescriptionsByPatient(patientId).stream().filter(p -> p.status().equals("Issued") || p.status().equals("Active")).toList();
     }
+
+    public void deletePrescription(String prescriptionId) {
+        prescriptionService.deletePrescription(prescriptionId);
+    }
+
+    public void updatePrescription(String prescriptionId, String patientId, String clinicianId,
+                                   String appointmentId, String medicationName, String dosage,
+                                   String frequency, int durationDays, int quantity,
+                                   String instructions, String pharmacyName, String status) {
+        prescriptionService.updatePrescription(prescriptionId, patientId, clinicianId,
+                appointmentId, medicationName, dosage, frequency, durationDays, quantity,
+                instructions, pharmacyName, status);
+    }
 }

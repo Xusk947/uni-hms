@@ -54,4 +54,15 @@ public final class AppointmentController {
                 .filter(a -> a.status().equals("Scheduled"))
                 .toList();
     }
+
+    public void deleteAppointment(String appointmentId) {
+        appointmentService.deleteAppointment(appointmentId);
+    }
+
+    public void updateAppointment(String appointmentId, String patientId, String clinicianId,
+                                  String facilityId, Date appointmentDate, Date appointmentTime,
+                                  int duration, String type, String status, String reason, String notes) {
+        appointmentService.updateAppointment(appointmentId, patientId, clinicianId,
+                facilityId, appointmentDate, appointmentTime, duration, type, status, reason, notes);
+    }
 }

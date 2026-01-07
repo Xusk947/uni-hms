@@ -4,7 +4,6 @@ import utils.parser.Clinician;
 import utils.parser.Staff;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +20,11 @@ public final class AuthenticationService {
 
     private void loadCredentials() {
         try {
-            List<Clinician.ClinicianData> clinicians = Clinician.parse(Path.of("clinicians.csv"));
+            List<Clinician.ClinicianData> clinicians = Clinician.parse(Const.CLINICIANS_FILE);
             clinicians.forEach(c -> users.put(c.clinicianId(),
                     new UserInfo(c.clinicianId(), c.firstName(), c.lastName(), c.title())));
 
-            List<Staff.StaffData> staff = Staff.parse(Path.of("staff.csv"));
+            List<Staff.StaffData> staff = Staff.parse(Const.STAFF_FILE);
             staff.forEach(s -> users.put(s.staffId(),
                     new UserInfo(s.staffId(), s.firstName(), s.lastName(), s.role())));
         } catch (IOException e) {
