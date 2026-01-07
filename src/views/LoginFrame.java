@@ -54,7 +54,7 @@ public class LoginFrame extends JFrame {
         mainPanel.add(subtitleLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 40)));
 
-        addLabeledField(mainPanel, "Staff ID", usernameField);
+        addLabeledField(mainPanel, "Staff ID (example: C001)", usernameField);
 
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         mainPanel.add(loginButton);
