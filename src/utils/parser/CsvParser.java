@@ -18,6 +18,7 @@ public final class CsvParser {
     public static <T> List<T> parse(Path csvPath, Function<String[], T> mapper) throws IOException {
         try (Stream<String> lines = Files.lines(csvPath)) {
             return lines.skip(1)
+                    .filter(line -> !line.isBlank())
                     .map(line -> line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                     .map(CsvParser::trimFields)
                     .map(mapper)
@@ -33,7 +34,8 @@ public final class CsvParser {
     }
 
     public static Date parseDate(String value) {
-        if (value == null || value.isEmpty()) return null;
+        if (value == null || value.isEmpty())
+            return null;
         try {
             return DATE_FORMAT.parse(value);
         } catch (ParseException e) {
@@ -42,7 +44,8 @@ public final class CsvParser {
     }
 
     public static Date parseTime(String value) {
-        if (value == null || value.isEmpty()) return null;
+        if (value == null || value.isEmpty())
+            return null;
         try {
             return TIME_FORMAT.parse(value);
         } catch (ParseException e) {
@@ -51,7 +54,8 @@ public final class CsvParser {
     }
 
     public static Date parseDateTime(String value) {
-        if (value == null || value.isEmpty()) return null;
+        if (value == null || value.isEmpty())
+            return null;
         try {
             return DATETIME_FORMAT.parse(value);
         } catch (ParseException e) {
@@ -60,7 +64,8 @@ public final class CsvParser {
     }
 
     public static int parseInt(String value) {
-        if (value == null || value.isEmpty()) return 0;
+        if (value == null || value.isEmpty())
+            return 0;
         return Integer.parseInt(value.replaceAll("[^0-9]", ""));
     }
 
