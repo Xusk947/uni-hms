@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Employee;
 import services.AuthenticationService;
 
 import java.util.Optional;
@@ -20,15 +19,11 @@ public final class AuthenticationController {
         authService.logout();
     }
 
-    public boolean verifyUser(String staffId) {
-        return authService.verifyUser(staffId);
-    }
-
-    public Optional<Employee> getCurrentUser() {
+    public Optional<AuthenticationService.UserInfo> getCurrentUser() {
         return authService.getCurrentUser();
     }
 
-    public void setCurrentUser(Employee user) {
-        authService.setCurrentUser(user);
+    public AuthenticationService getService() {
+        return authService;
     }
 }
