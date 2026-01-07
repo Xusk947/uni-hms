@@ -111,7 +111,7 @@ public class MainFrame extends JFrame {
             nameLabel.setForeground(ViewConstants.FOREGROUND);
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            JLabel idLabel = new JLabel("ID: " + user.id() + " • " + user.role());
+            JLabel idLabel = new JLabel(user.id() + ", " + user.role());
             idLabel.setFont(ViewConstants.SMALL_FONT);
             idLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
             idLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

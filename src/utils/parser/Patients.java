@@ -24,12 +24,11 @@ public final class Patients {
                 getString(fields[10]),
                 getString(fields[11]),
                 parseDate(fields[12]),
-                getString(fields[13])
-        ));
+                getString(fields[13])));
     }
 
     public static String toCsvLine(PatientData data) {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s%n",
+        return String.format("%n%s,%s,%s,%s,%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s",
                 data.patientId(),
                 data.firstName(),
                 data.lastName(),
@@ -60,7 +59,6 @@ public final class Patients {
             String emergencyContactName,
             String emergencyContactPhone,
             Date registrationDate,
-            String gpSurgeryId
-    ) {
+            String gpSurgeryId) {
     }
 }

@@ -90,7 +90,7 @@ public class LoginFrame extends JFrame {
 
         if (authController.login(username)) {
             SwingUtilities.invokeLater(() -> {
-                new MainFrame().setVisible(true);
+                new MainFrame(authController.getService()).setVisible(true);
                 dispose();
             });
         } else {

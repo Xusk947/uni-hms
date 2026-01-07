@@ -27,12 +27,11 @@ public final class Prescriptions {
                 getString(fields[11]),
                 getString(fields[12]),
                 parseDate(fields[13]),
-                fields.length > 14 ? parseDate(fields[14]) : null
-        ));
+                fields.length > 14 ? parseDate(fields[14]) : null));
     }
 
     public static String toCsvLine(PrescriptionData data) {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s%n",
+        return String.format("%n%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s",
                 data.prescriptionId(),
                 data.patientId(),
                 data.clinicianId(),
@@ -65,15 +64,13 @@ public final class Prescriptions {
             String pharmacyName,
             String status,
             Date issueDate,
-            Date collectionDate
-    ) {
+            Date collectionDate) {
         public Prescription toModel() {
             return new Prescription(
                     prescriptionId,
                     patientId,
                     medicationName + " - " + dosage,
-                    medicationName
-            );
+                    medicationName);
         }
     }
 }

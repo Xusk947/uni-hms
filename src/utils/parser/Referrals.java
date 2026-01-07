@@ -28,12 +28,11 @@ public final class Referrals {
                 getString(fields[12]),
                 getString(fields[13]),
                 parseDate(fields[14]),
-                parseDate(fields[15])
-        ));
+                parseDate(fields[15])));
     }
 
     public static String toCsvLine(ReferralData data) {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s,%s%n",
+        return String.format("%n%s,%s,%s,%s,%s,%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s,%s",
                 data.referralId(),
                 data.patientId(),
                 data.referringClinicianId(),
@@ -68,8 +67,7 @@ public final class Referrals {
             String appointmentId,
             String notes,
             Date createdDate,
-            Date lastUpdated
-    ) {
+            Date lastUpdated) {
         public Referral toModel() {
             return new Referral(referringClinicianId, referredToClinicianId);
         }

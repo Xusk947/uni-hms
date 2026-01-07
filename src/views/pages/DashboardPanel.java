@@ -11,91 +11,113 @@ import java.util.Date;
 
 public class DashboardPanel extends PageContainer {
 
-    private final PatientController patientController;
-    private final AppointmentController appointmentController;
-    private final PrescriptionController prescriptionController;
-    private final ReferralController referralController;
-    private final StaffController staffController;
+        private final PatientController patientController;
+        private final AppointmentController appointmentController;
+        private final PrescriptionController prescriptionController;
+        private final ReferralController referralController;
+        private final StaffController staffController;
 
-    public DashboardPanel(PatientController patientController,
-            AppointmentController appointmentController,
-            PrescriptionController prescriptionController,
-            ReferralController referralController,
-            StaffController staffController) {
-        super("Dashboard", "Overview of hospital activities.");
-        this.patientController = patientController;
-        this.appointmentController = appointmentController;
-        this.prescriptionController = prescriptionController;
-        this.referralController = referralController;
-        this.staffController = staffController;
+        public DashboardPanel(PatientController patientController,
+                        AppointmentController appointmentController,
+                        PrescriptionController prescriptionController,
+                        ReferralController referralController,
+                        StaffController staffController) {
+                super("Dashboard", "Overview of hospital activities.");
+                this.patientController = patientController;
+                this.appointmentController = appointmentController;
+                this.prescriptionController = prescriptionController;
+                this.referralController = referralController;
+                this.staffController = staffController;
 
-        // Stats Grid
-        JPanel statsPanel = new JPanel(new GridLayout(2, 3, 20, 20));
-        statsPanel.setBackground(ViewConstants.BACKGROUND);
-        statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+                // Stats "Linear" List (Vertical Stack)
+                JPanel statsPanel = new JPanel();
+                statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
+                statsPanel.setBackground(ViewConstants.BACKGROUND);
+                statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
-        refreshStats(statsPanel);
+                refreshStats(statsPanel);
 
-        setContent(statsPanel);
-    }
+                // Wrap in scroll pane
+                JScrollPane scrollPane = new JScrollPane(statsPanel);
+                scrollPane.setBorder(null);
+                scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+                setContent(scrollPane);
+        }
 
-    private void refreshStats(JPanel statsPanel) {
-        int totalPatients = patientController.getAllPatients().size();
-        statsPanel.add(createStatCard("Total Patients", String.valueOf(totalPatients), "Registered in system"));
+        private void refreshStats(JPanel statsPanel) {
+                // Add vertical spacing at top
+                statsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String today = sdf.format(new Date());
-        long appointmentsToday = appointmentController.getAllAppointments().stream()
-                .filter(a -> sdf.format(a.appointmentDate()).equals(today))
-                .count();
-        statsPanel
-                .add(createStatCard("Appointments Today", String.valueOf(appointmentsToday), "Scheduled for " + today));
+                int totalPatients = patientController.getAllPatients().size();
+                addStatCard(statsPanel, "Total Patients", String.valueOf(totalPatients), "Registered in system");
 
-        int totalStaff = staffController.getAllClinicians().size() + staffController.getAllStaff().size();
-        statsPanel.add(createStatCard("Total Staff", String.valueOf(totalStaff), "Clinicians & Support"));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String today = sdf.format(new Date());
+                long appointmentsToday = appointmentController.getAllAppointments().stream()
+                                .filter(a -> sdf.format(a.appointmentDate()).equals(today))
+                                .count();
+                addStatCard(statsPanel, "Appointments Today", String.valueOf(appointmentsToday),
+                                "Scheduled for " + today);
 
-        long pendingReferrals = referralController.getPendingReferrals().size();
-        statsPanel.add(createStatCard("Pending Referrals", String.valueOf(pendingReferrals), "Requires attention"));
+                int totalStaff = staffController.getAllClinicians().size() + staffController.getAllStaff().size();
+                addStatCard(statsPanel, "Total Staff", String.valueOf(totalStaff), "Clinicians & Support");
 
-        long prescriptionsIssued = prescriptionController.getAllPrescriptions().stream()
-                .filter(p -> "Issued".equalsIgnoreCase(p.status()))
-                .count();
-        statsPanel.add(
-                createStatCard("Prescriptions Issued", String.valueOf(prescriptionsIssued), "Active prescriptions"));
+                long pendingReferrals = referralController.getPendingReferrals().size();
+                addStatCard(statsPanel, "Pending Referrals", String.valueOf(pendingReferrals), "Requires attention");
 
-        long urgentReferrals = referralController.getAllReferrals().stream()
-                .filter(r -> "Urgent".equalsIgnoreCase(r.urgencyLevel()))
-                .count();
-        statsPanel.add(createStatCard("Urgent Referrals", String.valueOf(urgentReferrals), "High priority cases"));
-    }
+                long prescriptionsIssued = prescriptionController.getAllPrescriptions().stream()
+                                .filter(p -> "Issued".equalsIgnoreCase(p.status()))
+                                .count();
+                addStatCard(statsPanel, "Prescriptions Issued", String.valueOf(prescriptionsIssued),
+                                "Active prescriptions");
 
-    private JPanel createStatCard(String title, String value, String subtext) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(ViewConstants.BACKGROUND);
-        card.setBorder(ViewConstants.CARD_BORDER);
+                long urgentReferrals = referralController.getAllReferrals().stream()
+                                .filter(r -> "Urgent".equalsIgnoreCase(r.urgencyLevel()))
+                                .count();
+                addStatCard(statsPanel, "Urgent Referrals", String.valueOf(urgentReferrals), "High priority cases");
 
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(ViewConstants.BODY_FONT);
-        titleLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
-        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                statsPanel.add(Box.createVerticalGlue());
+        }
 
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(ViewConstants.HEADER_FONT.deriveFont(28f));
-        valueLabel.setForeground(ViewConstants.FOREGROUND);
-        valueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        private void addStatCard(JPanel panel, String title, String value, String subtext) {
+                panel.add(createStatCard(title, value, subtext));
+                panel.add(Box.createRigidArea(new Dimension(0, 15)));
+        }
 
-        JLabel subtextLabel = new JLabel(subtext);
-        subtextLabel.setFont(ViewConstants.SMALL_FONT);
-        subtextLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
-        subtextLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        private JPanel createStatCard(String title, String value, String subtext) {
+                JPanel card = new JPanel(new BorderLayout(20, 0));
+                card.setBackground(ViewConstants.BACKGROUND);
+                card.setBorder(ViewConstants.CARD_BORDER);
+                card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 90));
+                card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        card.add(titleLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 10)));
-        card.add(valueLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 5)));
-        card.add(subtextLabel);
+                // Text Info (Left)
+                JPanel textPanel = new JPanel();
+                textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+                textPanel.setBackground(ViewConstants.BACKGROUND);
 
-        return card;
-    }
+                JLabel titleLabel = new JLabel(title);
+                titleLabel.setFont(ViewConstants.BODY_FONT);
+                titleLabel.setForeground(ViewConstants.FOREGROUND);
+                titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+                JLabel subtextLabel = new JLabel(subtext);
+                subtextLabel.setFont(ViewConstants.SMALL_FONT);
+                subtextLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
+                subtextLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+                textPanel.add(titleLabel);
+                textPanel.add(Box.createRigidArea(new Dimension(0, 4)));
+                textPanel.add(subtextLabel);
+
+                // Value (Right)
+                JLabel valueLabel = new JLabel(value);
+                valueLabel.setFont(ViewConstants.HEADER_FONT);
+                valueLabel.setForeground(ViewConstants.FOREGROUND);
+
+                card.add(textPanel, BorderLayout.CENTER);
+                card.add(valueLabel, BorderLayout.EAST);
+
+                return card;
+        }
 }
