@@ -3,6 +3,7 @@ package controllers;
 import services.ReferralService;
 import utils.parser.Referrals;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,5 +59,9 @@ public final class ReferralController {
         return getAllReferrals().stream()
                 .filter(r -> r.status().equals("New") || r.status().equals("Pending"))
                 .toList();
+    }
+
+    public Path sendReferralEmail(String referralId) {
+        return referralService.sendReferralEmail(referralId);
     }
 }

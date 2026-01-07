@@ -1,6 +1,5 @@
 package services;
 
-import models.Employee;
 import utils.parser.Clinician;
 import utils.parser.Staff;
 
@@ -12,43 +11,47 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class AuthenticationService {
-    private final Map<String, String> credentials;
-    private Employee currentUser;
+    private final Map<String, UserInfo> users;
+    private UserInfo currentUser;
 
     public AuthenticationService() {
-        this.credentials = new HashMap<>();
+        this.users = new HashMap<>();
         loadCredentials();
     }
 
     private void loadCredentials() {
         try {
             List<Clinician.ClinicianData> clinicians = Clinician.parse(Path.of("clinicians.csv"));
-            clinicians.forEach(c -> credentials.put(c.clinicianId(), c.email()));
+            clinicians.forEach(c -> users.put(c.clinicianId(),
+                    new UserInfo(c.clinicianId(), c.firstName(), c.lastName(), c.title())));
 
             List<Staff.StaffData> staff = Staff.parse(Path.of("staff.csv"));
-            staff.forEach(s -> credentials.put(s.staffId(), s.email()));
+            staff.forEach(s -> users.put(s.staffId(),
+                    new UserInfo(s.staffId(), s.firstName(), s.lastName(), s.role())));
         } catch (IOException e) {
             throw new RuntimeException("Failed to load credentials", e);
         }
     }
 
     public boolean login(String staffId) {
-        return credentials.containsKey(staffId);
+        if (users.containsKey(staffId)) {
+            currentUser = users.get(staffId);
+            return true;
+        }
+        return false;
     }
 
     public void logout() {
         currentUser = null;
     }
 
-    public boolean verifyUser(String staffId) {
-        return credentials.containsKey(staffId);
-    }
-
-    public Optional<Employee> getCurrentUser() {
+    public Optional<UserInfo> getCurrentUser() {
         return Optional.ofNullable(currentUser);
     }
 
-    public void setCurrentUser(Employee user) {
-        this.currentUser = user;
+    public record UserInfo(String id, String firstName, String lastName, String role) {
+        public String getFullName() {
+            return firstName + " " + lastName;
+        }
     }
 }

@@ -70,15 +70,14 @@ public final class ReferralService {
     }
 
     public void createReferral(String referralId, String patientId, String referringClinicianId,
-                               String referredToClinicianId, String referringFacilityId,
-                               String referredToFacilityId, String urgencyLevel, String reason,
-                               String clinicalSummary, String requestedInvestigations) {
+            String referredToClinicianId, String referringFacilityId,
+            String referredToFacilityId, String urgencyLevel, String reason,
+            String clinicalSummary, String requestedInvestigations) {
         Date now = new Date();
         Referrals.ReferralData newReferral = new Referrals.ReferralData(
                 referralId, patientId, referringClinicianId, referredToClinicianId,
                 referringFacilityId, referredToFacilityId, now, urgencyLevel, reason,
-                clinicalSummary, requestedInvestigations, "New", "", "", now, now
-        );
+                clinicalSummary, requestedInvestigations, "New", "", "", now, now);
 
         try {
             Files.writeString(REFERRALS_FILE, Referrals.toCsvLine(newReferral),
@@ -90,43 +89,56 @@ public final class ReferralService {
         }
     }
 
-    private void generateReferralEmail(Referrals.ReferralData referral) {
+    public Path sendReferralEmail(String referralId) {
+        return findReferral(referralId)
+                .map(this::generateReferralEmail)
+                .orElseThrow(() -> new RuntimeException("Referral not found: " + referralId));
+    }
+
+    private Path generateReferralEmail(Referrals.ReferralData referral) {
+        Date now = new Date();
+        String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(now);
+        String sentDateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+
         String emailContent = String.format("""
-                        REFERRAL NOTIFICATION
-                        =====================
-                        
-                        Referral ID: %s
-                        Patient ID: %s
-                        Date: %s
-                        
-                        FROM: Clinician %s (Facility: %s)
-                        TO: Specialist %s (Facility: %s)
-                        
-                        Urgency Level: %s
-                        Reason: %s
-                        
-                        Clinical Summary:
-                        %s
-                        
-                        Requested Investigations:
-                        %s
-                        
-                        Status: %s
-                        
-                        =====================
-                        This is an automated referral notification.
-                        """,
+                REFERRAL NOTIFICATION
+                =====================
+
+                Referral ID: %s
+                Patient ID: %s
+                Referral Date: %s
+                Email Sent: %s
+
+                FROM: Clinician %s (Facility: %s)
+                TO: Specialist %s (Facility: %s)
+
+                Urgency Level: %s
+                Reason: %s
+
+                Clinical Summary:
+                %s
+
+                Requested Investigations:
+                %s
+
+                Status: %s
+
+                =====================
+                This is an automated referral notification.
+                """,
                 referral.referralId(), referral.patientId(),
                 DATE_FORMAT.format(referral.referralDate()),
+                sentDateTime,
                 referral.referringClinicianId(), referral.referringFacilityId(),
                 referral.referredToClinicianId(), referral.referredToFacilityId(),
                 referral.urgencyLevel(), referral.referralReason(),
                 referral.clinicalSummary(), referral.requestedInvestigations(),
                 referral.status());
 
-        Path emailFile = EMAIL_OUTPUT_DIR.resolve(referral.referralId() + "_email.txt");
+        Path emailFile = EMAIL_OUTPUT_DIR.resolve(referral.referralId() + "_email_" + timestamp + ".txt");
         try {
             Files.writeString(emailFile, emailContent);
+            return emailFile;
         } catch (IOException e) {
             throw new RuntimeException("Failed to generate email", e);
         }
