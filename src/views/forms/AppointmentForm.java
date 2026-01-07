@@ -153,24 +153,6 @@ public class AppointmentForm extends JDialog {
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
     }
 
-    private void stylePrimaryButton(JButton btn) {
-        btn.setFont(ViewConstants.BODY_FONT);
-        btn.setBackground(ViewConstants.PRIMARY);
-        btn.setForeground(ViewConstants.PRIMARY_FOREGROUND);
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-
-    private void styleSecondaryButton(JButton btn) {
-        btn.setFont(ViewConstants.BODY_FONT);
-        btn.setBackground(ViewConstants.SECONDARY);
-        btn.setForeground(ViewConstants.SECONDARY_FOREGROUND);
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-
     // Getters
     public boolean isSubmitted() {
         return submitted;

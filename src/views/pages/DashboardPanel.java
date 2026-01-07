@@ -1,6 +1,7 @@
 package views.pages;
 
 import controllers.*;
+import views.components.PageContainer;
 import views.constants.ViewConstants;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DashboardPanel extends JPanel {
+public class DashboardPanel extends PageContainer {
 
     private final PatientController patientController;
     private final AppointmentController appointmentController;
@@ -17,78 +18,51 @@ public class DashboardPanel extends JPanel {
     private final StaffController staffController;
 
     public DashboardPanel(PatientController patientController,
-                          AppointmentController appointmentController,
-                          PrescriptionController prescriptionController,
-                          ReferralController referralController,
-                          StaffController staffController) {
+            AppointmentController appointmentController,
+            PrescriptionController prescriptionController,
+            ReferralController referralController,
+            StaffController staffController) {
+        super("Dashboard", "Overview of hospital activities.");
         this.patientController = patientController;
         this.appointmentController = appointmentController;
         this.prescriptionController = prescriptionController;
         this.referralController = referralController;
         this.staffController = staffController;
 
-        setLayout(new BorderLayout());
-        setBackground(ViewConstants.BACKGROUND);
-        setBorder(ViewConstants.PADDING_BORDER);
-
-        // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(ViewConstants.BACKGROUND);
-
-        JLabel titleLabel = new JLabel("Dashboard");
-        titleLabel.setFont(ViewConstants.HEADER_FONT);
-        titleLabel.setForeground(ViewConstants.FOREGROUND);
-
-        JLabel subtitleLabel = new JLabel("Overview of hospital activities.");
-        subtitleLabel.setFont(ViewConstants.BODY_FONT);
-        subtitleLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
-
-        JPanel titleContainer = new JPanel(new GridLayout(2, 1));
-        titleContainer.setBackground(ViewConstants.BACKGROUND);
-        titleContainer.add(titleLabel);
-        titleContainer.add(subtitleLabel);
-
-        headerPanel.add(titleContainer, BorderLayout.WEST);
-        add(headerPanel, BorderLayout.NORTH);
-
         // Stats Grid
-        JPanel statsPanel = new JPanel(new GridLayout(2, 3, 20, 20)); // 2 rows, 3 cols, gap 20
+        JPanel statsPanel = new JPanel(new GridLayout(2, 3, 20, 20));
         statsPanel.setBackground(ViewConstants.BACKGROUND);
         statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         refreshStats(statsPanel);
 
-        add(statsPanel, BorderLayout.CENTER);
+        setContent(statsPanel);
     }
 
     private void refreshStats(JPanel statsPanel) {
-        // 1. Total Patients
         int totalPatients = patientController.getAllPatients().size();
         statsPanel.add(createStatCard("Total Patients", String.valueOf(totalPatients), "Registered in system"));
 
-        // 2. Appointments Today
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
         long appointmentsToday = appointmentController.getAllAppointments().stream()
                 .filter(a -> sdf.format(a.appointmentDate()).equals(today))
                 .count();
-        statsPanel.add(createStatCard("Appointments Today", String.valueOf(appointmentsToday), "Scheduled for " + today));
+        statsPanel
+                .add(createStatCard("Appointments Today", String.valueOf(appointmentsToday), "Scheduled for " + today));
 
-        // 3. Active Staff (Clinicians + Admin)
         int totalStaff = staffController.getAllClinicians().size() + staffController.getAllStaff().size();
         statsPanel.add(createStatCard("Total Staff", String.valueOf(totalStaff), "Clinicians & Support"));
 
-        // 4. Pending Referrals
         long pendingReferrals = referralController.getPendingReferrals().size();
         statsPanel.add(createStatCard("Pending Referrals", String.valueOf(pendingReferrals), "Requires attention"));
 
-        // 5. Prescriptions Issued
         long prescriptionsIssued = prescriptionController.getAllPrescriptions().stream()
                 .filter(p -> "Issued".equalsIgnoreCase(p.status()))
                 .count();
-        statsPanel.add(createStatCard("Prescriptions Issued", String.valueOf(prescriptionsIssued), "Active prescriptions"));
+        statsPanel.add(
+                createStatCard("Prescriptions Issued", String.valueOf(prescriptionsIssued), "Active prescriptions"));
 
-        // 6. Urgent Referrals
         long urgentReferrals = referralController.getAllReferrals().stream()
                 .filter(r -> "Urgent".equalsIgnoreCase(r.urgencyLevel()))
                 .count();

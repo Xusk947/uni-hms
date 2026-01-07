@@ -4,16 +4,19 @@ import views.constants.ViewConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SidebarButton extends JButton {
+public class SidebarButton extends JToggleButton {
+
+    private boolean hovered = false;
 
     public SidebarButton(String text, String iconPath) {
         super(text);
         setFont(ViewConstants.BODY_FONT);
         setForeground(ViewConstants.MUTED_FOREGROUND);
-        setBackground(ViewConstants.BACKGROUND); // Transparent-ish initially
+        setBackground(ViewConstants.BACKGROUND);
         setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
         setHorizontalAlignment(SwingConstants.LEFT);
         setFocusPainted(false);
@@ -24,32 +27,39 @@ public class SidebarButton extends JButton {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBackground(ViewConstants.MUTED);
-                setForeground(ViewConstants.FOREGROUND);
+                hovered = true;
+                updateStyle();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (!isSelected()) {
-                    setBackground(ViewConstants.BACKGROUND);
-                    setForeground(ViewConstants.MUTED_FOREGROUND);
-                }
+                hovered = false;
+                updateStyle();
             }
         });
+
+        // Listen for selection changes (from ButtonGroup)
+        addItemListener(e -> updateStyle());
+        
+        // Initial style
+        updateStyle();
     }
 
-    @Override
-    public void setSelected(boolean b) {
-        super.setSelected(b);
-        if (b) {
+    private void updateStyle() {
+        if (isSelected()) {
             setBackground(ViewConstants.SECONDARY);
             setForeground(ViewConstants.SECONDARY_FOREGROUND);
             setFont(ViewConstants.SUBHEADER_FONT.deriveFont(14f));
+        } else if (hovered) {
+            setBackground(ViewConstants.MUTED);
+            setForeground(ViewConstants.FOREGROUND);
+            setFont(ViewConstants.BODY_FONT);
         } else {
             setBackground(ViewConstants.BACKGROUND);
             setForeground(ViewConstants.MUTED_FOREGROUND);
             setFont(ViewConstants.BODY_FONT);
         }
+        repaint();
     }
 
     @Override

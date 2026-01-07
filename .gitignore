@@ -25,7 +25,8 @@ bin/
 
 ### VS Code ###
 .vscode/
-.windsurf
+.windsurf/
+.agents/
 
 ### Mac OS ###
 .DS_Store

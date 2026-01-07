@@ -85,15 +85,6 @@ public class LoginFrame extends JFrame {
         panel.add(fieldPanel);
     }
 
-    private void stylePrimaryButton(JButton btn) {
-        btn.setFont(ViewConstants.BODY_FONT);
-        btn.setBackground(ViewConstants.PRIMARY);
-        btn.setForeground(ViewConstants.PRIMARY_FOREGROUND);
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-
     private void handleLogin(ActionEvent e) {
         String username = usernameField.getText();
 

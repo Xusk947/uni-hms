@@ -85,7 +85,9 @@ public class MainFrame extends JFrame {
         navContainer.setBackground(ViewConstants.BACKGROUND);
         navContainer.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
 
-        addNavButton(navContainer, "Dashboard", "DASHBOARD");
+        SidebarButton dashboardBtn = addNavButton(navContainer, "Dashboard", "DASHBOARD");
+        dashboardBtn.setSelected(true); // Set initial selection
+        
         addNavButton(navContainer, "Patients", "PATIENTS");
         addNavButton(navContainer, "Appointments", "APPOINTMENTS");
         addNavButton(navContainer, "Prescriptions", "PRESCRIPTIONS");
@@ -96,15 +98,16 @@ public class MainFrame extends JFrame {
         sidebar.add(Box.createVerticalGlue());
     }
 
-    private void addNavButton(JPanel container, String text, String cardName) {
+    private SidebarButton addNavButton(JPanel container, String text, String cardName) {
         SidebarButton btn = new SidebarButton(text, null);
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.addActionListener((ActionEvent e) -> cardLayout.show(contentPanel, cardName));
-
+        
         navGroup.add(btn);
         container.add(btn);
         container.add(Box.createRigidArea(new Dimension(0, 8)));
+        return btn;
     }
 
     private void initContentArea() {

@@ -24,7 +24,7 @@ public class ModernTextField extends JTextField {
         setForeground(ViewConstants.FOREGROUND);
         setCaretColor(ViewConstants.FOREGROUND);
         setMargin(new Insets(8, 12, 8, 12));
-        setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12)); // Padding for text
+        setBorder(ViewConstants.INPUT_BORDER);
     }
 
     @Override
@@ -35,11 +35,6 @@ public class ModernTextField extends JTextField {
         // Paint background
         g2.setColor(getBackground());
         g2.fill(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, 8, 8));
-
-        // Paint border
-        g2.setColor(ViewConstants.INPUT_COLOR);
-        g2.setStroke(new BasicStroke(1f));
-        g2.draw(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, 8, 8));
 
         g2.dispose();
         super.paintComponent(g);

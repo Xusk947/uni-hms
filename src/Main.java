@@ -12,12 +12,13 @@ public class Main {
             try {
                 // Set system look and feel for better integration (though we use custom styling)
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
+                
+                LoginFrame loginFrame = new LoginFrame();
+                loginFrame.setVisible(true);
+            } catch (Throwable e) {
                 e.printStackTrace();
+                System.exit(1);
             }
-
-            LoginFrame loginFrame = new LoginFrame();
-            loginFrame.setVisible(true);
         });
     }
 }
