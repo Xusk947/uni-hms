@@ -25,6 +25,9 @@ public final class TableStyler {
         table.setSelectionForeground(ViewConstants.FOREGROUND);
         table.setFocusable(false);
 
+        table.setDefaultEditor(Object.class, null);
+        table.getTableHeader().setReorderingAllowed(false);
+
         styleHeader(table.getTableHeader());
         applyCellRenderer(table);
     }

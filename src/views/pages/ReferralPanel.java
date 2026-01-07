@@ -4,6 +4,7 @@ import controllers.ReferralController;
 import views.components.ModernButton;
 import views.components.PageContainer;
 import views.components.TableStyler;
+import views.forms.ReferralForm;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +20,7 @@ public class ReferralPanel extends PageContainer {
         this.referralController = referralController;
 
         ModernButton addButton = new ModernButton("New Referral");
+        addButton.addActionListener(e -> openNewReferralForm());
         addHeaderAction(addButton);
 
         String[] columns = { "ID", "Patient", "To Specialist", "Urgency", "Date", "Status" };
@@ -28,6 +30,30 @@ public class ReferralPanel extends PageContainer {
 
         setContent(TableStyler.wrapInScrollPane(referralTable));
         loadData();
+    }
+
+    private void openNewReferralForm() {
+        ReferralForm form = new ReferralForm(SwingUtilities.getWindowAncestor(this));
+        form.setVisible(true);
+
+        if (form.isSubmitted()) {
+            String referralId = "R" + System.currentTimeMillis();
+
+            referralController.createReferral(
+                    referralId,
+                    form.getPatientId(),
+                    form.getReferringClinicianId(),
+                    form.getReferredToClinicianId(),
+                    form.getReferringFacilityId(),
+                    form.getReferredToFacilityId(),
+                    form.getUrgencyLevel(),
+                    form.getReason(),
+                    form.getClinicalSummary(),
+                    form.getRequestedInvestigations());
+
+            loadData();
+            JOptionPane.showMessageDialog(this, "Referral created successfully!");
+        }
     }
 
     private void loadData() {
