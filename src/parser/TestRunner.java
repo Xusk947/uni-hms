@@ -1,4 +1,4 @@
-package utils.parser;
+package parser;
 
 import java.nio.file.Path;
 

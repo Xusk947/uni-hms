@@ -1,7 +1,7 @@
 package controllers;
 
 import services.AppointmentService;
-import utils.parser.Appointment;
+import parser.Appointment;
 
 import java.util.Date;
 import java.util.List;

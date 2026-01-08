@@ -1,7 +1,7 @@
 package controllers;
 
 import services.PatientService;
-import utils.parser.Patients;
+import parser.Patients;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +28,10 @@ public final class PatientController {
 
     public void updatePatient(String patientId, Patients.PatientData updatedData) {
         patientService.updatePatient(patientId, updatedData);
+    }
+
+    public void deletePatient(String patientId) {
+        patientService.deletePatient(patientId);
     }
 
     public List<Patients.PatientData> searchPatients(String searchTerm) {

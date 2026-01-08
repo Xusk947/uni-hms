@@ -1,6 +1,6 @@
 package controllers;
 
-import utils.parser.Patients;
+import parser.Patients;
 
 import java.util.Date;
 import java.util.List;

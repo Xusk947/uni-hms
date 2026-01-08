@@ -1,10 +1,9 @@
 package services;
 
-import utils.parser.Clinician;
-import utils.parser.Staff;
+import parser.Clinician;
+import parser.Staff;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +17,8 @@ public final class StaffService {
 
     private void loadData() {
         try {
-            clinicians = Clinician.parse(Path.of("clinicians.csv"));
-            staffMembers = Staff.parse(Path.of("staff.csv"));
+            clinicians = Clinician.parse(Const.CLINICIANS_FILE);
+            staffMembers = Staff.parse(Const.STAFF_FILE);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load staff data", e);
         }

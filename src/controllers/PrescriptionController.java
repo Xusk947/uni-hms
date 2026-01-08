@@ -1,7 +1,7 @@
 package controllers;
 
 import services.PrescriptionService;
-import utils.parser.Prescriptions;
+import parser.Prescriptions;
 
 import java.util.List;
 import java.util.Optional;

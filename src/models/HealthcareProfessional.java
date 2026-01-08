@@ -11,8 +11,4 @@ public abstract class HealthcareProfessional extends Employee {
     public String getDepartment() {
         return department;
     }
-
-    public abstract void createPrescription();
-
-    public abstract void viewPatientRecord();
 }

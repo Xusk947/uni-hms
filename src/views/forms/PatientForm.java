@@ -1,5 +1,6 @@
 package views.forms;
 
+import parser.Patients;
 import views.constants.ViewConstants;
 
 import javax.swing.*;
@@ -18,13 +19,22 @@ public class PatientForm extends JDialog {
     private final JTextField emergencyPhoneField;
     private final JTextField gpSurgeryField;
     private final JComboBox<String> genderCombo;
-    // Simple date text fields for now, ideally would be a date picker
     private final JTextField dobField;
 
     private boolean submitted = false;
+    private boolean isEditMode = false;
+    private String patientId;
 
     public PatientForm(Window owner) {
-        super(owner, "Add New Patient", ModalityType.APPLICATION_MODAL);
+        this(owner, null);
+    }
+
+    public PatientForm(Window owner, Patients.PatientData existingPatient) {
+        super(owner, existingPatient == null ? "Add New Patient" : "Edit Patient", ModalityType.APPLICATION_MODAL);
+        this.isEditMode = existingPatient != null;
+        if (isEditMode) {
+            this.patientId = existingPatient.patientId();
+        }
         setSize(500, 700);
         setLocationRelativeTo(owner);
         setLayout(new BorderLayout());
@@ -55,17 +65,16 @@ public class PatientForm extends JDialog {
         scrollPane.setBorder(null);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setBackground(ViewConstants.BACKGROUND);
         buttonPanel.setBorder(ViewConstants.PADDING_BORDER);
 
-        JButton cancelButton = new JButton("Cancel");
-        styleSecondaryButton(cancelButton);
+        views.components.ModernButton cancelButton = new views.components.ModernButton("Cancel",
+                ViewConstants.SECONDARY, ViewConstants.SECONDARY_FOREGROUND);
         cancelButton.addActionListener(e -> dispose());
 
-        JButton saveButton = new JButton("Save Patient");
-        stylePrimaryButton(saveButton);
+        views.components.ModernButton saveButton = new views.components.ModernButton(
+                isEditMode ? "Update Patient" : "Save Patient");
         saveButton.addActionListener(e -> {
             submitted = true;
             setVisible(false);
@@ -74,6 +83,26 @@ public class PatientForm extends JDialog {
         buttonPanel.add(cancelButton);
         buttonPanel.add(saveButton);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        if (isEditMode && existingPatient != null) {
+            populateFields(existingPatient);
+        }
+    }
+
+    private void populateFields(Patients.PatientData patient) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        firstNameField.setText(patient.firstName());
+        lastNameField.setText(patient.lastName());
+        dobField.setText(sdf.format(patient.dateOfBirth()));
+        nhsNumberField.setText(patient.nhsNumber());
+        genderCombo.setSelectedItem(patient.gender());
+        phoneField.setText(patient.phoneNumber());
+        emailField.setText(patient.email());
+        addressField.setText(patient.address());
+        postcodeField.setText(patient.postcode());
+        emergencyContactField.setText(patient.emergencyContactName());
+        emergencyPhoneField.setText(patient.emergencyContactPhone());
+        gpSurgeryField.setText(patient.gpSurgeryId());
     }
 
     private JTextField addFormField(JPanel panel, String labelText) {
@@ -99,25 +128,6 @@ public class PatientForm extends JDialog {
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
     }
 
-    private void stylePrimaryButton(JButton btn) {
-        btn.setFont(ViewConstants.BODY_FONT);
-        btn.setBackground(ViewConstants.PRIMARY);
-        btn.setForeground(ViewConstants.PRIMARY_FOREGROUND);
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-
-    private void styleSecondaryButton(JButton btn) {
-        btn.setFont(ViewConstants.BODY_FONT);
-        btn.setBackground(ViewConstants.SECONDARY);
-        btn.setForeground(ViewConstants.SECONDARY_FOREGROUND);
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-
-    // Getters
     public boolean isSubmitted() {
         return submitted;
     }

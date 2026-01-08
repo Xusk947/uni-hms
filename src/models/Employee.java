@@ -16,6 +16,4 @@ public abstract class Employee {
     public String getName() {
         return name;
     }
-
-    public abstract void login();
 }

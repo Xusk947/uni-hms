@@ -57,32 +57,8 @@ public class PageContainer extends JPanel {
         add(headerPanel, BorderLayout.NORTH);
     }
 
-    public void setTitle(String title) {
-        titleLabel.setText(title);
-    }
-
-    public void setSubtitle(String subtitle) {
-        if (subtitle != null && !subtitle.isEmpty()) {
-            subtitleLabel.setText(subtitle);
-            if (subtitleLabel.getParent() == null) {
-                titleContainer.add(Box.createRigidArea(new Dimension(0, 6)));
-                titleContainer.add(subtitleLabel);
-            }
-        } else {
-            titleContainer.remove(subtitleLabel);
-        }
-        titleContainer.revalidate();
-        titleContainer.repaint();
-    }
-
     public void addHeaderAction(JComponent component) {
         actionsContainer.add(component);
-    }
-
-    public void clearHeaderActions() {
-        actionsContainer.removeAll();
-        actionsContainer.revalidate();
-        actionsContainer.repaint();
     }
 
     public void setContent(JComponent content) {
@@ -93,14 +69,6 @@ public class PageContainer extends JPanel {
         add(content, BorderLayout.CENTER);
         revalidate();
         repaint();
-    }
-
-    public JPanel getHeaderPanel() {
-        return headerPanel;
-    }
-
-    public JPanel getActionsContainer() {
-        return actionsContainer;
     }
 
     public void addSubHeader(JComponent panel) {

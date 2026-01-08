@@ -1,8 +1,8 @@
 package controllers;
 
 import services.StaffService;
-import utils.parser.Clinician;
-import utils.parser.Staff;
+import parser.Clinician;
+import parser.Staff;
 
 import java.util.List;
 

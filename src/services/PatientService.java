@@ -1,6 +1,6 @@
 package services;
 
-import utils.parser.Patients;
+import parser.Patients;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,6 +54,35 @@ public final class PatientService {
     }
 
     public void updatePatient(String patientId, Patients.PatientData updatedData) {
-        loadPatients();
+        try {
+            List<String> lines = Files.readAllLines(Const.PATIENTS_FILE);
+            List<String> updatedLines = lines.stream()
+                    .map(line -> {
+                        if (line.startsWith(patientId + ",")) {
+                            return Patients.toCsvLine(updatedData).trim();
+                        }
+                        return line;
+                    })
+                    .collect(java.util.stream.Collectors.toList());
+
+            Files.write(Const.PATIENTS_FILE, updatedLines);
+            loadPatients();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update patient", e);
+        }
+    }
+
+    public void deletePatient(String patientId) {
+        try {
+            List<String> lines = Files.readAllLines(Const.PATIENTS_FILE);
+            List<String> updatedLines = lines.stream()
+                    .filter(line -> !line.startsWith(patientId + ","))
+                    .collect(java.util.stream.Collectors.toList());
+
+            Files.write(Const.PATIENTS_FILE, updatedLines);
+            loadPatients();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete patient", e);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package views.forms;
 
+import parser.Referrals;
 import views.components.ModernButton;
 import views.components.ModernTextField;
 import views.components.RoundedBorder;
@@ -28,7 +29,7 @@ public class ReferralForm extends JDialog {
         this(owner, null);
     }
 
-    public ReferralForm(Window owner, utils.parser.Referrals.ReferralData existingReferral) {
+    public ReferralForm(Window owner, Referrals.ReferralData existingReferral) {
         super(owner, existingReferral == null ? "New Referral" : "Edit Referral", ModalityType.APPLICATION_MODAL);
         this.isEditMode = existingReferral != null;
         if (isEditMode) {
@@ -89,7 +90,7 @@ public class ReferralForm extends JDialog {
         }
     }
 
-    private void populateFields(utils.parser.Referrals.ReferralData referral) {
+    private void populateFields(Referrals.ReferralData referral) {
         patientIdField.setText(referral.patientId());
         referringClinicianField.setText(referral.referringClinicianId());
         referredToClinicianField.setText(referral.referredToClinicianId());

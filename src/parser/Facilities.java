@@ -1,4 +1,4 @@
-package utils.parser;
+package parser;
 
 import models.Facility;
 
@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-import static utils.parser.CsvParser.getString;
-import static utils.parser.CsvParser.parseInt;
+import static parser.CsvParser.getString;
+import static parser.CsvParser.parseInt;
 
 public final class Facilities {
 

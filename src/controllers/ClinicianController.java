@@ -1,9 +1,9 @@
 package controllers;
 
-import utils.parser.Appointment;
-import utils.parser.Patients;
-import utils.parser.Prescriptions;
-import utils.parser.Referrals;
+import parser.Appointment;
+import parser.Patients;
+import parser.Prescriptions;
+import parser.Referrals;
 
 import java.util.List;
 

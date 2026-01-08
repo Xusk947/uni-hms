@@ -1,5 +1,6 @@
 package views.forms;
 
+import parser.Appointment;
 import views.constants.ViewConstants;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class AppointmentForm extends JDialog {
         this(owner, null);
     }
 
-    public AppointmentForm(Window owner, utils.parser.Appointment.AppointmentData existingAppointment) {
+    public AppointmentForm(Window owner, Appointment.AppointmentData existingAppointment) {
         super(owner, existingAppointment == null ? "New Appointment" : "Edit Appointment", ModalityType.APPLICATION_MODAL);
         this.isEditMode = existingAppointment != null;
         if (isEditMode) {
@@ -102,7 +103,7 @@ public class AppointmentForm extends JDialog {
         }
     }
 
-    private void populateFields(utils.parser.Appointment.AppointmentData appointment) {
+    private void populateFields(Appointment.AppointmentData appointment) {
         patientIdField.setText(appointment.patientId());
         clinicianIdField.setText(appointment.clinicianId());
         facilityIdField.setText(appointment.facilityId());
@@ -121,7 +122,7 @@ public class AppointmentForm extends JDialog {
         if (!validateField(dateField)) isValid = false;
         if (!validateField(timeField)) isValid = false;
 
-        // Basic date format validation check
+        // date validation
         if (!dateField.getText().trim().isEmpty() && !dateField.getText().matches("\\d{4}-\\d{2}-\\d{2}")) {
             dateField.setBorder(BorderFactory.createCompoundBorder(
                     new views.components.RoundedBorder(ViewConstants.ERROR_BORDER, 8, 1),
@@ -130,7 +131,7 @@ public class AppointmentForm extends JDialog {
             isValid = false;
         }
 
-        // Basic time format validation check
+        // time validation
         if (!timeField.getText().trim().isEmpty() && !timeField.getText().matches("\\d{2}:\\d{2}")) {
             timeField.setBorder(BorderFactory.createCompoundBorder(
                     new views.components.RoundedBorder(ViewConstants.ERROR_BORDER, 8, 1),
@@ -150,7 +151,7 @@ public class AppointmentForm extends JDialog {
             ));
             return false;
         }
-        // Reset border
+        // reset border
         field.setBorder(ViewConstants.INPUT_BORDER);
         return true;
     }
@@ -177,7 +178,6 @@ public class AppointmentForm extends JDialog {
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
     }
 
-    // Getters
     public boolean isSubmitted() {
         return submitted;
     }
@@ -206,7 +206,7 @@ public class AppointmentForm extends JDialog {
         try {
             return Integer.parseInt(durationField.getText());
         } catch (NumberFormatException e) {
-            return 30; // Default
+            return 30; // minutes
         }
     }
 

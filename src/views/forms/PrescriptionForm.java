@@ -1,5 +1,6 @@
 package views.forms;
 
+import parser.Prescriptions;
 import views.components.ModernButton;
 import views.components.ModernTextField;
 import views.components.RoundedBorder;
@@ -29,7 +30,7 @@ public class PrescriptionForm extends JDialog {
         this(owner, null);
     }
 
-    public PrescriptionForm(Window owner, utils.parser.Prescriptions.PrescriptionData existingPrescription) {
+    public PrescriptionForm(Window owner, Prescriptions.PrescriptionData existingPrescription) {
         super(owner, existingPrescription == null ? "Issue Prescription" : "Edit Prescription", ModalityType.APPLICATION_MODAL);
         this.isEditMode = existingPrescription != null;
         if (isEditMode) {
@@ -109,7 +110,7 @@ public class PrescriptionForm extends JDialog {
         }
     }
 
-    private void populateFields(utils.parser.Prescriptions.PrescriptionData prescription) {
+    private void populateFields(Prescriptions.PrescriptionData prescription) {
         patientIdField.setText(prescription.patientId());
         clinicianIdField.setText(prescription.clinicianId());
         appointmentIdField.setText(prescription.appointmentId());

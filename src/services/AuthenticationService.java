@@ -1,7 +1,7 @@
 package services;
 
-import utils.parser.Clinician;
-import utils.parser.Staff;
+import parser.Clinician;
+import parser.Staff;
 
 import java.io.IOException;
 import java.util.HashMap;

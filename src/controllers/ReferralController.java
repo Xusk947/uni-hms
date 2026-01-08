@@ -1,7 +1,7 @@
 package controllers;
 
 import services.ReferralService;
-import utils.parser.Referrals;
+import parser.Referrals;
 
 import java.nio.file.Path;
 import java.util.List;

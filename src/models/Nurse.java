@@ -11,19 +11,4 @@ public final class Nurse extends HealthcareProfessional {
     public String getQualification() {
         return qualification;
     }
-
-    @Override
-    public void login() {
-    }
-
-    @Override
-    public void createPrescription() {
-    }
-
-    @Override
-    public void viewPatientRecord() {
-    }
-
-    public void updatePatientVitals() {
-    }
 }

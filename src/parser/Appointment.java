@@ -1,11 +1,11 @@
-package utils.parser;
+package parser;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 
-import static utils.parser.CsvParser.*;
+import static parser.CsvParser.*;
 
 public final class Appointment {
 

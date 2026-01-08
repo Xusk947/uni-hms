@@ -1,11 +1,7 @@
 package views;
 
 import controllers.*;
-import services.AppointmentService;
-import services.AuthenticationService;
-import services.PatientService;
-import services.PrescriptionService;
-import services.StaffService;
+import services.*;
 import views.components.ModernButton;
 import views.components.SidebarButton;
 import views.constants.ViewConstants;
@@ -64,10 +60,12 @@ public class MainFrame extends JFrame {
         sidebar.setPreferredSize(new Dimension(250, getHeight()));
 
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 30));
+
         headerPanel.setBackground(ViewConstants.BACKGROUND);
         JLabel titleLabel = new JLabel(ViewConstants.APP_NAME);
         titleLabel.setFont(ViewConstants.HEADER_FONT);
         titleLabel.setForeground(ViewConstants.FOREGROUND);
+
         headerPanel.add(titleLabel);
         headerPanel.setMaximumSize(new Dimension(250, 80));
         sidebar.add(headerPanel);
@@ -101,17 +99,21 @@ public class MainFrame extends JFrame {
     private JPanel createUserInfoPanel() {
         JPanel userPanel = new JPanel();
         userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
+
         userPanel.setBackground(ViewConstants.BACKGROUND);
+
         userPanel.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
         userPanel.setMaximumSize(new Dimension(250, 70));
 
         authService.getCurrentUser().ifPresent(user -> {
             JLabel nameLabel = new JLabel(user.getFullName());
+
             nameLabel.setFont(ViewConstants.BODY_FONT.deriveFont(Font.BOLD));
             nameLabel.setForeground(ViewConstants.FOREGROUND);
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel idLabel = new JLabel(user.id() + ", " + user.role());
+
             idLabel.setFont(ViewConstants.SMALL_FONT);
             idLabel.setForeground(ViewConstants.MUTED_FOREGROUND);
             idLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -127,11 +129,13 @@ public class MainFrame extends JFrame {
     private JPanel createExitPanel() {
         JPanel exitPanel = new JPanel(new BorderLayout());
         exitPanel.setBackground(ViewConstants.BACKGROUND);
+
         exitPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         exitPanel.setMaximumSize(new Dimension(400, 55));
 
         ModernButton exitButton = new ModernButton("Exit", ViewConstants.DESTRUCTIVE, Color.WHITE);
         exitButton.setPreferredSize(new Dimension(0, 40));
+
         exitButton.addActionListener(e -> {
             authService.logout();
             dispose();
@@ -144,22 +148,25 @@ public class MainFrame extends JFrame {
 
     private SidebarButton addNavButton(JPanel container, String text, String cardName) {
         SidebarButton btn = new SidebarButton(text, null);
+
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         btn.addActionListener((ActionEvent e) -> cardLayout.show(contentPanel, cardName));
 
         navGroup.add(btn);
         container.add(btn);
+
         container.add(Box.createRigidArea(new Dimension(0, 8)));
         return btn;
     }
 
     private void initContentArea() {
         cardLayout = new CardLayout();
+
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(ViewConstants.BACKGROUND);
 
-        // Register Views
         contentPanel.add(new views.pages.DashboardPanel(patientController, appointmentController,
                 prescriptionController, referralController, staffController), "DASHBOARD");
         contentPanel.add(new views.pages.PatientPanel(patientController), "PATIENTS");
@@ -167,17 +174,5 @@ public class MainFrame extends JFrame {
         contentPanel.add(new views.pages.PrescriptionPanel(prescriptionController), "PRESCRIPTIONS");
         contentPanel.add(new views.pages.ReferralPanel(referralController), "REFERRALS");
         contentPanel.add(new views.pages.StaffPanel(staffController), "STAFF");
-    }
-
-    private JPanel createPlaceholderPanel(String title) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(ViewConstants.BACKGROUND);
-
-        JLabel label = new JLabel(title);
-        label.setFont(ViewConstants.HEADER_FONT);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-
-        panel.add(label, BorderLayout.CENTER);
-        return panel;
     }
 }

@@ -15,19 +15,4 @@ public final class GeneralPractitioner extends HealthcareProfessional {
     public void setRemote(boolean remote) {
         this.remote = remote;
     }
-
-    @Override
-    public void login() {
-    }
-
-    @Override
-    public void createPrescription() {
-    }
-
-    @Override
-    public void viewPatientRecord() {
-    }
-
-    public void createReferral() {
-    }
 }

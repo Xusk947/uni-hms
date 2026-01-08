@@ -13,13 +13,8 @@ public class ModernTextField extends JTextField {
         init();
     }
 
-    public ModernTextField(int columns) {
-        super(columns);
-        init();
-    }
-
     private void init() {
-        setOpaque(false); // We paint background ourselves
+        setOpaque(false);
         setFont(ViewConstants.BODY_FONT);
         setForeground(ViewConstants.FOREGROUND);
         setCaretColor(ViewConstants.FOREGROUND);
@@ -40,13 +35,8 @@ public class ModernTextField extends JTextField {
         super.paintComponent(g);
     }
 
-    // Override setBorder to prevent external overrides breaking the look, 
-    // or handle it gracefully if it's an error border
     @Override
     public void setBorder(javax.swing.border.Border border) {
-        // Allow setting border if it's the empty padding border we set in init
-        // or if we want to support error borders later.
-        // For now, let's keep super.setBorder to allow padding changes.
         super.setBorder(border);
     }
 }

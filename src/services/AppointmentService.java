@@ -1,6 +1,7 @@
 package services;
 
-import utils.parser.Appointment;
+import parser.Appointment;
+import parser.CsvParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -140,7 +141,7 @@ public final class AppointmentService {
                     .map(line -> {
                         if (line.startsWith(appointmentId + ",")) {
                             String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                            Date createdDate = parts.length > 11 ? utils.parser.CsvParser.parseDate(parts[11]) : now;
+                            Date createdDate = parts.length > 11 ? CsvParser.parseDate(parts[11]) : now;
 
                             Appointment.AppointmentData updated = new Appointment.AppointmentData(
                                     appointmentId, patientId, clinicianId, facilityId,

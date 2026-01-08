@@ -29,7 +29,7 @@ public class DashboardPanel extends PageContainer {
         this.referralController = referralController;
         this.staffController = staffController;
 
-        // Stats "Linear" List (Vertical Stack)
+        // Stats, Vertical Stack
         JPanel statsPanel = new JPanel();
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
         statsPanel.setBackground(ViewConstants.BACKGROUND);
@@ -45,7 +45,7 @@ public class DashboardPanel extends PageContainer {
     }
 
     private void refreshStats(JPanel statsPanel) {
-        // Add vertical spacing at top
+        // Vertical spacing at top
         statsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         int totalPatients = patientController.getAllPatients().size();
@@ -91,7 +91,7 @@ public class DashboardPanel extends PageContainer {
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 90));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Text Info (Left)
+        // Text Info on the Left
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(ViewConstants.BACKGROUND);
@@ -110,7 +110,7 @@ public class DashboardPanel extends PageContainer {
         textPanel.add(Box.createRigidArea(new Dimension(0, 4)));
         textPanel.add(subtextLabel);
 
-        // Value (Right)
+        // Value, maybe on the Right if styles works hahahaha
         JLabel valueLabel = new JLabel(value);
         valueLabel.setFont(ViewConstants.HEADER_FONT);
         valueLabel.setForeground(ViewConstants.FOREGROUND);

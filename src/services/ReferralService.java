@@ -1,6 +1,7 @@
 package services;
 
-import utils.parser.Referrals;
+import parser.CsvParser;
+import parser.Referrals;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -101,7 +102,7 @@ public final class ReferralService {
         String sentDateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
 
         String emailContent = String.format("""
-                        REFERRAL NOTIFICATION
+                        EMAIL (Referral Notification)
                         =====================
                         
                         Referral ID: %s
@@ -123,8 +124,9 @@ public final class ReferralService {
                         
                         Status: %s
                         
+                        Kind regards,
+                        HMS
                         =====================
-                        This is an automated referral notification.
                         """,
                 referral.referralId(), referral.patientId(),
                 DATE_FORMAT.format(referral.referralDate()),
@@ -210,8 +212,8 @@ public final class ReferralService {
                     .map(line -> {
                         if (line.startsWith(referralId + ",")) {
                             String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                            Date referralDate = parts.length > 6 ? utils.parser.CsvParser.parseDate(parts[6]) : now;
-                            Date createdDate = parts.length > 14 ? utils.parser.CsvParser.parseDate(parts[14]) : now;
+                            Date referralDate = parts.length > 6 ? CsvParser.parseDate(parts[6]) : now;
+                            Date createdDate = parts.length > 14 ? CsvParser.parseDate(parts[14]) : now;
                             String appointmentId = parts.length > 12 ? parts[12] : "";
                             String notes = parts.length > 13 ? parts[13] : "";
 

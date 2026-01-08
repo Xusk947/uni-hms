@@ -6,6 +6,7 @@ out/
 
 ### Project emails ###
 .referral_emails/*
+/referral_emails/
 
 ### Eclipse ###
 .apt_generated

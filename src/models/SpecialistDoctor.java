@@ -11,19 +11,4 @@ public final class SpecialistDoctor extends HealthcareProfessional {
     public String getSpeciality() {
         return speciality;
     }
-
-    @Override
-    public void login() {
-    }
-
-    @Override
-    public void createPrescription() {
-    }
-
-    @Override
-    public void viewPatientRecord() {
-    }
-
-    public void accessReferral() {
-    }
 }

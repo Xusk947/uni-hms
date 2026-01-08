@@ -37,10 +37,10 @@ public class SidebarButton extends JToggleButton {
             }
         });
 
-        // Listen for selection changes (from ButtonGroup)
+        // Listen for selection changes
         addItemListener(e -> updateStyle());
 
-        // Initial style
+        // Init
         updateStyle();
     }
 

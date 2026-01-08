@@ -1,6 +1,7 @@
 package services;
 
-import utils.parser.Prescriptions;
+import parser.CsvParser;
+import parser.Prescriptions;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -101,9 +102,9 @@ public final class PrescriptionService {
                     .map(line -> {
                         if (line.startsWith(prescriptionId + ",")) {
                             String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                            Date prescriptionDate = parts.length > 4 ? utils.parser.CsvParser.parseDate(parts[4]) : now;
-                            Date issueDate = parts.length > 13 ? utils.parser.CsvParser.parseDate(parts[13]) : now;
-                            Date collectionDate = parts.length > 14 ? utils.parser.CsvParser.parseDate(parts[14]) : null;
+                            Date prescriptionDate = parts.length > 4 ? CsvParser.parseDate(parts[4]) : now;
+                            Date issueDate = parts.length > 13 ? CsvParser.parseDate(parts[13]) : now;
+                            Date collectionDate = parts.length > 14 ? CsvParser.parseDate(parts[14]) : null;
 
                             Prescriptions.PrescriptionData updated = new Prescriptions.PrescriptionData(
                                     prescriptionId, patientId, clinicianId, appointmentId,
