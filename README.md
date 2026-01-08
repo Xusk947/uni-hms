@@ -20,7 +20,7 @@ java -cp out Main
 
 ## Login
 
-Use any Staff ID from `clinicians.csv` or `staff.csv` to login (e.g., `C001`).
+Use any Staff ID from `staff.csv` to login (example: `C001`).
 
 ## Features
 
@@ -28,7 +28,7 @@ Use any Staff ID from `clinicians.csv` or `staff.csv` to login (e.g., `C001`).
 
 ## Project Structure
 
-Everything here is stored in `src` folder and you can start to check it from `Main.java`
+Everything here is stored in `src` folder, and you can start to check it from `Main.java`
 
 Each folder has its own thing to do
 
