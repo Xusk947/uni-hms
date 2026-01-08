@@ -4,6 +4,10 @@ out/
 !**/src/test/**/out/
 .kotlin
 
+### Project emails ###
+.referral_emails/*
+/referral_emails/
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -25,7 +29,8 @@ bin/
 
 ### VS Code ###
 .vscode/
-.windsurf
+.windsurf/
+.agent/
 
 ### Mac OS ###
 .DS_Store
